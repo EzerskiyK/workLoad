@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+
+<div th:each="academicDegree : ${academicDegrees}">
+    <a th:href="@{/academic_degree/{id}(id=${academicDegree.getAcademicDegreeId()})}"
+       th:text="${academicDegree.getAcademicDegreeName() + ', Количество рабочих часов: ' + academicDegree.getWorkLimit()}">user</a>
+</div>
+<br/>
+<hr/>
+
+<a href="/academic_degree/new">Добавить новую должность</a>
+
+</body>
+</html>
+

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+
+<div th:each="subject : ${subjects}">
+    <a th:href="@{/subject/{id}(id=${subject.getEducationalDisciplineId()})}"
+       th:text="${subject.getEducationalDisciplineName() +
+        ', Подолжительность: ' + subject.getEducationalDisciplineDuration() +
+        ', Рекомендуемый преподователь : ' + subject.getRecommendedTeacher().getFio() +
+        ', Максимальное число студентов: ' + subject.getMaxStudents()}">user</a>
+</div>
+<br/>
+<hr/>
+
+<a href="/subject/new">Добавть новый предмет</a>
+
+</body>
+</html>
+

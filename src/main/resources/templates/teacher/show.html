@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+
+<p th:text="${'Фамилия Имя Отчество: ' +  teacher.getFio()}">ФИО</p>
+<p th:text="${'Должность: ' +  teacher.getAcademicDegree().getAcademicDegreeName()}">Должность</p>
+<p th:text="${'Рабочая ставка: ' +  teacher.getWorkingRate()}"></p>
+<p th:text="${'Максимальное количество рабочих часов: ' +  (teacher.getMaximumWorkingHours())}"></p>
+<p th:text="${'Актуальное количество рабочих часов: ' +  (teacher.getActualWorkingHours())}"></p>
+<img th:if="${teacher.getImageFileName() != null}" src="teachersImages/teacher.getImageFileName()">
+
+
+<div th:if="${recSubjects.isEmpty()}">
+    <p>У преподователя нет рекомендованных предметов</p>
+    <hr/>
+</div>
+
+<div th:if="${!recSubjects.isEmpty()}">
+    <hr/>
+    <b>Рекомендованные предметы: </b>
+    <br/>
+    <table th:each="recSubject : ${recSubjects}">
+        <tr>
+            <td>
+                <span th:text="${recSubject.getEducationalDisciplineName()}">
+<!--                      th:style="${book.isExpired()} ? 'color : red' : 'color : black'">-->
+
+                </span>
+            </td>
+        <tr/>
+
+    </table>
+    <hr/>
+</div>
+<!--<p th:text="${'Максимальное количество рабочих часов: ' +  teacher.getActualSubject()}"></p>-->
+
+<form th:method="GET" th:action="@{/teacher/{id}/edit(id=${teacher.getTeacherId()})}">
+    <input type="submit" value="Редактировать">
+</form>
+
+<form th:method="DELETE" th:action="@{/teacher/{id}(id=${teacher.getTeacherId()})}">
+    <input type="submit" value="Удалить">
+</form>
+
+
+</body>
+</html>

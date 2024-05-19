@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+<p th:text="${academicDegree.getAcademicDegreeName() + ', Количество рабочих часов: ' + academicDegree.getWorkLimit()}">VALUE</p>
+
+<div th:if="${teachers.isEmpty()}">
+    <p>Нет преподователей с этой должностью</p>
+    <hr/>
+</div>
+
+<div th:if="${!teachers.isEmpty()}">
+    <hr/>
+    <b>Переподователи с этой должностью: </b>
+    <br/>
+    <table th:each="teacher : ${teachers}">
+        <tr>
+            <td>
+                <span th:text="${teacher.getFio}">
+<!--                      th:style="${book.isExpired()} ? 'color : red' : 'color : black'">-->
+
+                </span>
+            </td>
+        <tr/>
+
+    </table>
+    <hr/>
+</div>
+
+<form th:method="GET" th:action="@{/academic_degree/{id}/edit(id=${academicDegree.getAcademicDegreeId()})}">
+    <input type="submit" value="Редактировать">
+</form>
+
+<form th:method="DELETE" th:action="@{/academic_degree/{id}(id=${academicDegree.getAcademicDegreeId()})}">
+    <input type="submit" value="Удалить">
+</form>
+</body>
+</html>

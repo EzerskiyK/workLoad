@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Новая доджность</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/teacher}" th:object = "${teacher}" enctype="multipart/form-data">
+    <label for="fio">Введите ФИО преподователя</label>
+    <input type="text" th:field="*{fio}" id="fio"/>
+    <div style="color: crimson" th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}">Full name error</div>
+    <br/>
+    <label for="academicDegree">Выберите должность </label>
+    <select th:object="${teacher}" th:field="*{academicDegree}" id="academicDegree">
+        <option th:each="academicDegree : ${academicDegrees}" th:value="${academicDegree.getAcademicDegreeId()}" th:text="${academicDegree.getAcademicDegreeName()}">
+        </option>
+    </select>
+    <div style="color: crimson" th:if="${#fields.hasErrors('academicDegree')}" th:errors="*{academicDegree}">Full name error</div>
+
+    <br/>
+    <label for="wR">Введите рабочую ставку</label>
+    <input type="text" th:field="*{workingRate}" id="wR"/>
+        <div style="color: crimson" th:if="${#fields.hasErrors('workingRate')}" th:errors="*{workingRate}">Full name error</div>
+    <br/>
+
+    <input type="file" th:object="${imgFile}" name="imgFile">
+
+
+    <input type="submit" value="Создать">
+
+</form>
+
+</body>
+</html>

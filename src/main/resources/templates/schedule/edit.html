@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование человека</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/schedule/{id}(id=${schedule.getScheduleId()})}" th:object = "${schedule}">
+    <label for="teacher">Выберите преподователя </label>
+    <select th:object="${schedule}" th:field="*{actualTeacher}" id="teacher">
+        <option th:each="teacher : ${teachers}" th:value="${teacher.getTeacherId()}" th:text="${teacher.getFio()}">
+        </option>
+    </select>
+    <!--    <input type="text" th:field="*{workLimit}" id="workLimit"/>-->
+    <!--    <div style="color: crimson" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">Year error</div>-->
+    <br>
+
+    <input type="submit" value="Создать">
+
+</form>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+
+<p th:text="${'Название предмета: ' +  subject.getEducationalDisciplineName()}">ФИО</p>
+<p th:text="${'Продолжительность: ' +  subject.getEducationalDisciplineDuration()}">Должность</p>
+<p th:text="${'Максимальное число студентов: ' +  subject.getMaxStudents()}">Должность</p>
+<p th:text="${'Рекомендуемы преподователь: ' +  subject.getRecommendedTeacher().getFio()}"></p>
+<p th:text="${'Установлен преподователь?  ' +  subject.isHasTeacher()}"></p>
+
+
+<form th:method="GET" th:action="@{/subject/{id}/edit(id=${subject.getEducationalDisciplineId()})}">
+    <input type="submit" value="Редактировать">
+</form>
+
+<form th:method="DELETE" th:action="@{/subject/{id}(id=${subject.getEducationalDisciplineId()})}">
+    <input type="submit" value="Удалить">
+</form>
+
+
+</body>
+</html>

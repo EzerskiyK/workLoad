@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+<p th:text="${group.getSpeciality() +
+       ', Год поступления: ' + group.getYearOfEntering() +
+       ', Число студентов: ' + group.getNumberOfStudents()}">VALUE</p>
+
+<div th:if="${subGroups.isEmpty()}">
+    <p>У этой группы нет подгруппы</p>
+    <hr/>
+</div>
+
+<div th:if="${!subGroups.isEmpty()}">
+    <hr/>
+    <b>Подгруппы этой группы: </b>
+    <br/>
+    <table th:each="subGroup : ${subGroups}">
+        <tr>
+            <td>
+                <span th:text="${subGroup.getSubGroupName()}">
+<!--                      th:style="${book.isExpired()} ? 'color : red' : 'color : black'">-->
+
+                </span>
+            </td>
+        <tr/>
+
+    </table>
+    <hr/>
+</div>
+
+<form th:method="GET" th:action="@{/group/{id}/edit(id=${group.getGroupId()})}">
+    <input type="submit" value="Редактировать">
+</form>
+
+<form th:method="DELETE" th:action="@{/group/{id}(id=${group.getGroupId()})}">
+    <input type="submit" value="Удалить">
+</form>
+</body>
+</html>

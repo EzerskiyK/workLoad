@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+
+<p th:text="${'Название предмета: ' +  schedule.getEducationalDiscipline().getEducationalDisciplineName()}">ФИО</p>
+<p th:text="${'Преподователь: ' +  schedule.getActualTeacher()?.getFio()}">Должность</p>
+<p th:text="${'Группа студентов: ' +  schedule.getSubGroupOfStudents().getSubGroupName()}">Должность</p>
+
+
+
+<form th:method="GET" th:action="@{/schedule/{id}/edit(id=${schedule.getScheduleId()})}">
+    <input type="submit" value="Редактировать">
+</form>
+
+<form th:method="DELETE" th:action="@{/schedule/{id}(id=${schedule.getScheduleId()})}">
+    <input type="submit" value="Удалить">
+</form>
+
+
+</body>
+</html>

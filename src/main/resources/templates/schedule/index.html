@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+
+<div th:each="schedule : ${schedules}">
+    <a th:href="@{/schedule/{id}(id=${schedule.getScheduleId()})}"
+       th:text="${schedule.getEducationalDiscipline().getEducationalDisciplineName() +
+        ', Преподователь: ' + schedule.getActualTeacher()?.getFio() +
+        ', Группа: ' + schedule.getSubGroupOfStudents().getSubGroupName()}">user</a>
+</div>
+<br/>
+<hr/>
+
+<a href="/schedule/new">Добавть новое расписание</a>
+
+</body>
+</html>
+
