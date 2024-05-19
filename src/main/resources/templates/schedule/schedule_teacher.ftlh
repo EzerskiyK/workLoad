@@ -6,6 +6,15 @@
         <h2>Переподовательский состав</h2>
     </div>
 
+    <form action="/schedule_teacher" method="get" class="row row-cols-lg-auto g-3  align-items-center">
+        <div class="col-12">
+            <input type="text" name="query" class="form-control " placeholder="Поиск по названию">
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-outline-primary ml-5">Найти</button>
+        </div>
+    </form>
+
     <div class="row row-cols-4 g-4 mt-3">
         <#list teachers as teacher>
 
@@ -36,7 +45,7 @@
             </div>
 
         <#else>
-            <h3>Товаров нет</h3>
+            <h3>Преподователи не найдены</h3>
         </#list>
     </div>
 

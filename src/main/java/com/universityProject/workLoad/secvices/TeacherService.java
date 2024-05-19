@@ -70,6 +70,12 @@ public class TeacherService {
 
     @Transactional
     public void delete(int id) {
+        File file = new File(teacherImageUploadPath + "/" + teacherRepository.findById(id).get().getImageFileName());
+        if(file.delete()){
+            System.out.println("deleted");
+        } else {
+            System.out.println("not deleted");
+        }
         teacherRepository.deleteById(id);
     }
 
@@ -93,5 +99,12 @@ public class TeacherService {
             return resultFileName;
         }
         return null;
+    }
+
+    public List<Teacher> searchTeacher(String query) {
+        if(query != null) {
+            return teacherRepository.findByFioContainsIgnoreCaseOrderByFio(query);
+        }
+        return findAll();
     }
 }

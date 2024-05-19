@@ -31,8 +31,9 @@ public class UiController {
     }
 
     @GetMapping("/schedule_teacher")
-    public String teacherIndex(Model model){
-        model.addAttribute("teachers", teacherService.findAll());
+    public String teacherIndex(@RequestParam(name = "query", required = false) String query,
+                               Model model){
+        model.addAttribute("teachers", teacherService.searchTeacher(query));
         return "schedule/schedule_teacher";
     }
 
