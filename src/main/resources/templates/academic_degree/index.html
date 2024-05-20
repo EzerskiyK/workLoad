@@ -1,20 +1,109 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+    <th:block th:replace="block/head :: head"></th:block>
 </head>
 <body>
+<th:block th:replace="block/navbar :: navbar"></th:block>
 
-<div th:each="academicDegree : ${academicDegrees}">
-    <a th:href="@{/academic_degree/{id}(id=${academicDegree.getAcademicDegreeId()})}"
-       th:text="${academicDegree.getAcademicDegreeName() + ', Количество рабочих часов: ' + academicDegree.getWorkLimit()}">user</a>
+<div class="container text-center md-5">
+
+    <h4 class="mt-5">Преподовательские должности</h4>
 </div>
+
+
+<div class="m-4">
+    <div class="row row-cols-4 g-4 mt-3">
+        <div th:each="academicDegree, iterStat : ${academicDegrees}">
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${academicDegree.academicDegreeName}"></h5>
+                        <p class="card-text" th:text="'Количество рабочих часов: ' + ${academicDegree.workLimit}"></p>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#exampleModal' + ${iterStat.index}">
+                            Подробнее
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" th:id="'exampleModal' + ${iterStat.index}" tabindex="-1" th:aria-labelledby="'exampleModalLabel' + ${iterStat.index}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" th:id="'exampleModalLabel' + ${iterStat.index}" th:text="${academicDegree.academicDegreeName}"></h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p> Количество рабочих часов: <span th:text="${academicDegree.workLimit}"></span>ч</p>
+                                        <div th:if="${academicDegree.teacherList.isEmpty()}">
+                                            Нет преподователей с этой должностью
+                                        </div>
+                                        <div th:if="${!academicDegree.teacherList.isEmpty()}">
+                                            <p> Преподаватели с этой должностью: </p>
+                                            <div th:each="teacher : ${academicDegree.teacherList}">
+                                                <p th:text="${teacher.fio}"></p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <form th:method="DELETE" th:action="@{/academic_degree}">
+                                            <input type="hidden" name="academicDegreeId" th:value="${academicDegree.academicDegreeId}">
+                                            <button type="submit" class="btn btn-danger" >Удалить</button>
+                                        </form>
+
+                                        <form th:method="GET" th:action="@{/academic_degree/{id}/edit(id=${academicDegree.academicDegreeId})}">
+                                            <button type="submit" class="btn btn-primary">Редактировать</button>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <br/>
 <hr/>
 
-<a href="/academic_degree/new">Добавить новую должность</a>
+<p class="ms-3">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+        Добавить новую должность
+    </button>
+</p>
+<div style="min-height: 500px;">
+    <div class="collapse collapse-horizontal ms-3" id="collapseWidthExample">
+        <div class="card card-body" style="width: 600px;">
+            <form th:method="POST" th:action="@{/academic_degree}" th:object = "${academicDegree}">
+                <div class="row">
+                    <div class="col">
+                        <label for="name" class="form-label">Название</label>
+                        <input type="text" th:field="*{academicDegreeName}" class="form-control" aria-label="Название" id="name">
+                        <div style="color: crimson" th:if="${#fields.hasErrors('academicDegreeName')}" th:errors="*{academicDegreeName}"> error</div>
+                    </div>
+                    <div class="col">
+                        <label for="time" class="form-label">Временной лимит</label>
+                        <input type="text" th:field="*{workLimit}" class="form-control" aria-label="Временной лимит" id="time">
+                        <div style="color: crimson" th:if="${#fields.hasErrors('workLimit')}" th:errors="*{workLimit}"> error</div>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-2" type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+</div>
 
+
+
+<th:block th:replace="block/scripts :: scripts"></th:block>
 </body>
 </html>
 

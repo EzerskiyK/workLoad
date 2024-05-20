@@ -59,4 +59,9 @@ public class UiController {
         scheduleService.save(schedule, groupOfStudents);
         return "redirect:/schedule_teacher/" + teacherId;
     }
+
+    @GetMapping()
+    public String test(){
+        return "academic_degree/common";
+    }
 }

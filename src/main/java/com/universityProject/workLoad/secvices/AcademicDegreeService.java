@@ -41,7 +41,7 @@ public class AcademicDegreeService {
         AcademicDegree result = academicDegreeRepository.findById(id).get();
         updatedAcademicDegree.setAcademicDegreeId(result.getAcademicDegreeId());
         updatedAcademicDegree.setTeacherList(result.getTeacherList());
-
+        System.out.println(result.toString());
         academicDegreeRepository.save(updatedAcademicDegree);
     }
 

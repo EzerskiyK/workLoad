@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Редактирование человека</title>
+    <th:block th:replace="block/head :: head"></th:block>
 </head>
 <body>
+    <th:block th:replace="block/navbar :: navbar"></th:block>
 
-<form th:method="PATCH" th:action="@{/academic_degree/{id}(id=${academicDegree.getAcademicDegreeId()})}" th:object = "${academicDegree}">
-    <label for="name">Введите название должности</label>
-    <input type="text" th:field="*{academicDegreeName}" id="name"/>
-        <div style="color: crimson" th:if="${#fields.hasErrors('academicDegreeName')}" th:errors="*{academicDegreeName}">Full name error</div>
-    <br/>
-    <label for="workLimit">Введите максимальное число рабочих часов </label>
-    <input type="text" th:field="*{workLimit}" id="workLimit"/>
-        <div style="color: crimson" th:if="${#fields.hasErrors('workLimit')}" th:errors="*{workLimit}">Year error</div>
-    <br/>
-    <input type="submit" value="Создать">
+<div class="container text-center md-5">
 
-</form>
+    <h4 class="mt-5">Редактирование</h4>
+</div>
+    <br>
+    <br>
+    <div class="ms-4">
+        <form th:method="PATCH" th:action="@{/academic_degree/{id}(id=${academicDegree.getAcademicDegreeId()})}" th:object = "${academicDegree}" class="row g-3 needs-validation" novalidate>
+            <div class="col-md-4">
+                <label for="validationCustom01" class="form-label">Название должности</label>
+                <input type="text" class="form-control" id="validationCustom01" th:field="*{academicDegreeName}" required>
+                <div style="color: crimson" th:if="${#fields.hasErrors('academicDegreeName')}" th:errors="*{academicDegreeName}">Full name error</div>
 
+            </div>
+            <div class="col-md-4">
+                <label for="validationCustom02" class="form-label">Временное ограничение</label>
+                <input type="text" class="form-control" id="validationCustom02" th:field="*{workLimit}" required>
+                <div style="color: crimson" th:if="${#fields.hasErrors('workLimit')}" th:errors="*{workLimit}">Year error</div>
+
+            </div>
+
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Изменить</button>
+                <a href="/academic_degree">Вернуться</a>
+
+            </div>
+        </form>
+    </div>
+    <th:block th:replace="block/scripts :: scripts"></th:block>
 </body>
 </html>

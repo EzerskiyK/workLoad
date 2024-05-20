@@ -26,7 +26,7 @@ public class AcademicDegreeController {
     }
 
     @GetMapping()
-    public String index(Model model) {
+    public String index(@ModelAttribute AcademicDegree academicDegree, Model model) {
         model.addAttribute("academicDegrees", academicDegreeService.findAll());
         return "academic_degree/index";
     }
@@ -45,10 +45,11 @@ public class AcademicDegreeController {
 
     @PostMapping()
     public String createAcademicDegree(@ModelAttribute @Valid AcademicDegree academicDegree,
-                                       BindingResult bindingResult) {
+                                       BindingResult bindingResult, Model model) {
         academicDegreeValidator.validate(academicDegree, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "academic_degree/new";
+            model.addAttribute("academicDegrees", academicDegreeService.findAll());
+            return "academic_degree/index";
         }
         academicDegreeService.save(academicDegree);
         return "redirect:/academic_degree";
@@ -64,16 +65,18 @@ public class AcademicDegreeController {
     public String update(@ModelAttribute("academicDegree") @Valid AcademicDegree academicDegree,
                          BindingResult bindingResult,
                          @PathVariable("id") int id) {
+        System.out.println(id);
+        System.out.println(academicDegree.toString());
         academicDegreeValidator.validate(academicDegree, bindingResult);
         if (bindingResult.hasErrors()) {
             return "academic_degree/edit";
         }
         academicDegreeService.update(id,academicDegree);
-        return "redirect:/academic_degree/{id}";
+        return "redirect:/academic_degree";
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    @DeleteMapping()
+    public String delete(@RequestParam("academicDegreeId") int id) {
         academicDegreeService.delete(id);
         return "redirect:/academic_degree";
     }

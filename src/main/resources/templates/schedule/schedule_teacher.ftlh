@@ -1,4 +1,4 @@
-<#import "blocks/common.ftlh" as c>
+<#import "../blocks/common.ftlh" as c>
 
 <@c.page>
 

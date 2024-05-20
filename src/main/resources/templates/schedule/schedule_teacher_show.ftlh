@@ -1,4 +1,4 @@
-<#import "blocks/common.ftlh" as c>
+<#import "../blocks/common.ftlh" as c>
 
 <@c.page>
     <div class="container text-center md-5">
@@ -88,7 +88,9 @@
                         <div class="accordion-body">
                             Длительность предмета: ${subject.educationalDisciplineDuration}ч. <br>
                             Максимальное количество студентов: ${subject.maxStudents} <br>
-                            Рекомендуемый преподователь: ${subject.recommendedTeacher.fio}<br>
+                            <#if subject.recommendedTeacher??>
+                                  Рекомендуемый преподователь: ${subject.recommendedTeacher.fio}<br>
+                            </#if>
 
                             <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal${subject_index}">
                                 Добавить предмет
