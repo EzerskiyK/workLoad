@@ -29,8 +29,10 @@ public class TeacherController {
     }
 
     @GetMapping()
-    public String index(Model model) {
+    public String index(@ModelAttribute Teacher teacher,Model model) {
         model.addAttribute("teachers", teacherService.findAll());
+        model.addAttribute("academicDegrees", academicDegreeService.findAll());
+
         return "teacher/index";
     }
 
@@ -55,7 +57,9 @@ public class TeacherController {
                                 @ModelAttribute("imgFile") MultipartFile imgFile) throws IOException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("academicDegrees", academicDegreeService.findAll());
-            return "teacher/new";
+            model.addAttribute("teachers", teacherService.findAll());
+
+            return "teacher/index";
         }
         teacherService.save(teacher, imgFile);
 
@@ -80,13 +84,13 @@ public class TeacherController {
             model.addAttribute("academicDegrees", academicDegreeService.findAll());
             return "teacher/edit";
         }
-
+        System.out.println(id);
         teacherService.update(id,teacher, imgFile);
         return "redirect:/teacher";
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    @DeleteMapping()
+    public String delete(@RequestParam("teacherId") int id) {
         teacherService.delete(id);
         return "redirect:/teacher";
     }

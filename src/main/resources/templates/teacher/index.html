@@ -1,21 +1,141 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+    <th:block th:replace="block/head :: head"></th:block>
 </head>
 <body>
+<th:block th:replace="block/navbar :: navbar"></th:block>
 
-<div th:each="teacher : ${teachers}">
-    <a th:href="@{/teacher/{id}(id=${teacher.getTeacherId()})}"
-       th:text="${teacher.getFio() + ', Должность: ' + teacher.getAcademicDegree().getAcademicDegreeName() +
-        ', Ставка: ' + teacher.getWorkingRate() +
-        ', Количество рабочих часов: ' + teacher.getMaximumWorkingHours()}">user</a>
+<div class="container text-center md-5">
+    <h4 class="mt-5">Преподователи</h4>
 </div>
-<br/>
-<hr/>
+
+<div class="m-4">
+    <div class="row row-cols-4 g-4 mt-3">
+        <div th:each="teacher, iterStat : ${teachers}">
+            <div class="col">
+                <div class="card">
+                    <div th:if="${teacher.imageFileName != null}">
+                        <img th:src="@{'/images/teachersImages/' + ${teacher.imageFileName}}" class="card-img-top img-fluid" style="width: 100%; height: 19rem;">
+                    </div>
+                    <div th:if="${teacher.imageFileName == null}">
+                        <img src="/defaultImages/defoultImage.png" class="card-img-top img-fluid" style="width: 100%; height: 19rem;">
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${teacher.fio}"></h5>
+                        <hr>
+                        <p class="card-text" th:text="'Должность: ' + ${teacher.academicDegree.academicDegreeName}"></p>
+                        <p class="card-text" th:text="'Рабочая ставка: ' + ${teacher.getWorkingRate()}"></p>
+                        <p class="card-text" th:text="'Занятость: ' + ${teacher.actualWorkingHours} + '/' + ${teacher.getMaximumWorkingHours()}"></p>
+                        <hr>
+
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#exampleModal' + ${iterStat.index}">
+                            Подробнее
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" th:id="'exampleModal' + ${iterStat.index}" tabindex="-1" th:aria-labelledby="'exampleModalLabel' + ${iterStat.index}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:id="'exampleModalLabel' + ${iterStat.index}" th:text="${teacher.fio}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="card-text" th:text="'Преподавательская должность: ' + ${teacher.academicDegree.academicDegreeName}"></p>
+                                        <p class="card-text" th:text="'Рабочая ставка: ' + ${teacher.getWorkingRate()}"></p>
+                                        <p class="card-text" th:text="'Максимальное количество часов работы: ' + ${teacher.getMaximumWorkingHours()}"></p>
+                                        <p class="card-text" th:text="'Актуальное количество часов работы: ' + ${teacher.actualWorkingHours}"></p>
+                                        <hr>
+                                        <div th:if="${teacher.recommendedSubject.isEmpty()}">
+                                            У этого преподавателя нет рекомендованных предметов
+                                        </div>
+                                        <div th:if="${!teacher.recommendedSubject.isEmpty()}">
+                                            <p><b>Рекомендованные предметы этого преподавателя:</b></p>
+                                            <div th:each="subject : ${teacher.recommendedSubject}">
+                                                <p th:text="${subject.educationalDisciplineName}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form th:method="DELETE" th:action="@{/teacher}">
+                                            <input type="hidden" name="teacherId" th:value="${teacher.teacherId}">
+                                            <button type="submit" class="btn btn-danger">Удалить</button>
+                                        </form>
+
+                                        <form th:method="GET" th:action="@{/teacher/{id}/edit(id=${teacher.teacherId})}">
+                                            <button type="submit" class="btn btn-primary">Редактировать</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p class="ms-3">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+        Добавить нового преподователя
+    </button>
+</p>
+<div style="min-height: 500px;">
+    <div class="collapse collapse-horizontal ms-3" id="collapseWidthExample">
+        <div class="card card-body" style="width: 600px;">
+            <form th:method="POST" th:action="@{/teacher}" th:object = "${teacher}" enctype="multipart/form-data">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="fio" class="form-label">Фамилия Имя Отчество</label>
+                        <input type="text" th:field="*{fio}" class="form-control" aria-label="Название" id="fio">
+                        <div style="color: crimson" th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}"> error</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="workingRate" class="form-label">Рабочая ставка</label>
+                        <input type="text" th:field="*{workingRate}" class="form-control" aria-label="Название" id="workingRate">
+                        <div style="color: crimson" th:if="${#fields.hasErrors('workingRate')}" th:errors="*{workingRate}"> error</div>
+                    </div>
+                    <div class="col-12">
+                        <label for="academicDegree" class="form-label">Преподовательская должность</label>
+<!--                        <select id="academicDegree" class="form-select">-->
+<!--                            <option selected>Choose...</option>-->
+<!--                            <option>...</option>-->
+<!--                        </select>-->
+
+                        <select th:object="${teacher}" th:field="*{academicDegree}" id="academicDegree" class="form-select">
+                            <option th:each="academicDegree : ${academicDegrees}" th:value="${academicDegree.getAcademicDegreeId()}" th:text="${academicDegree.getAcademicDegreeName()}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="input-group mb-3">
+                            <input type="file" th:object="${imgFile}" name="imgFile" class="form-control" id="inputGroupFile02">
+                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary">Создать</button>
+
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 <a href="/teacher/new">Добавть нового преподователя</a>
+
+
+<th:block th:replace="block/scripts :: scripts"></th:block>
 
 </body>
 </html>

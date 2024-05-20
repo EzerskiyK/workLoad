@@ -1,35 +1,76 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Редактирование человека</title>
+    <th:block th:replace="block/head :: head"></th:block>
+
 </head>
 <body>
+<th:block th:replace="block/navbar :: navbar"></th:block>
+
+<div class="container text-center md-5">
+    <h4 class="mt-5">Редактирование</h4>
+</div>
+
+<!--<form th:method="PATCH" th:action="@{/teacher/{id}(id=${teacher.getTeacherId()})}" th:object = "${teacher}" enctype="multipart/form-data">-->
+<!--    <label for="fio">Введите ФИО преподователя</label>-->
+<!--    <input type="text" th:field="*{fio}" id="fio"/>-->
+<!--    <div style="color: crimson" th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}">Full name error</div>-->
+<!--    <br/>-->
+<!--    <label for="academicDegree">Выберите должность </label>-->
+<!--    <select th:object="${teacher}" th:field="*{academicDegree}" id="academicDegree">-->
+<!--        <option th:each="academicDegree : ${academicDegrees}" th:value="${academicDegree.getAcademicDegreeId()}" th:text="${academicDegree.getAcademicDegreeName()}">-->
+<!--        </option>-->
+<!--    </select>-->
+<!--    <div style="color: crimson" th:if="${#fields.hasErrors('academicDegree')}" th:errors="*{academicDegree}">Full name error</div>-->
+
+<!--    <br/>-->
+<!--    <label for="wR">Введите рабочую ставку</label>-->
+<!--    <input type="text" th:field="*{workingRate}" id="wR"/>-->
+<!--    <div style="color: crimson" th:if="${#fields.hasErrors('workingRate')}" th:errors="*{workingRate}">Full name error</div>-->
+<!--    <br/>-->
+
+<!--    <input type="file" th:object="${imgFile}" name="imgFile">-->
+
+<!--    <input type="submit" value="Создать">-->
+
+
+<!--</form>-->
 
 <form th:method="PATCH" th:action="@{/teacher/{id}(id=${teacher.getTeacherId()})}" th:object = "${teacher}" enctype="multipart/form-data">
-    <label for="fio">Введите ФИО преподователя</label>
-    <input type="text" th:field="*{fio}" id="fio"/>
-    <div style="color: crimson" th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}">Full name error</div>
-    <br/>
-    <label for="academicDegree">Выберите должность </label>
-    <select th:object="${teacher}" th:field="*{academicDegree}" id="academicDegree">
-        <option th:each="academicDegree : ${academicDegrees}" th:value="${academicDegree.getAcademicDegreeId()}" th:text="${academicDegree.getAcademicDegreeName()}">
-        </option>
-    </select>
-    <div style="color: crimson" th:if="${#fields.hasErrors('academicDegree')}" th:errors="*{academicDegree}">Full name error</div>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="fio" class="form-label">Фамилия Имя Отчество</label>
+            <input type="text" th:field="*{fio}" class="form-control" aria-label="Название" id="fio">
+            <div style="color: crimson" th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}"> error</div>
+        </div>
+        <div class="col-md-6">
+            <label for="workingRate" class="form-label">Рабочая ставка</label>
+            <input type="text" th:field="*{workingRate}" class="form-control" aria-label="Название" id="workingRate">
+            <div style="color: crimson" th:if="${#fields.hasErrors('workingRate')}" th:errors="*{workingRate}"> error</div>
+        </div>
+        <div class="col-12">
+            <label for="academicDegree" class="form-label">Преподовательская должность</label>
 
-    <br/>
-    <label for="wR">Введите рабочую ставку</label>
-    <input type="text" th:field="*{workingRate}" id="wR"/>
-    <div style="color: crimson" th:if="${#fields.hasErrors('workingRate')}" th:errors="*{workingRate}">Full name error</div>
-    <br/>
+            <select th:object="${teacher}" th:field="*{academicDegree}" id="academicDegree" class="form-select">
+                <option th:each="academicDegree : ${academicDegrees}" th:value="${academicDegree.getAcademicDegreeId()}" th:text="${academicDegree.getAcademicDegreeName()}">
+                </option>
+            </select>
+        </div>
 
-    <input type="file" th:object="${imgFile}" name="imgFile">
+        <div class="col-12">
+            <div class="input-group mb-3">
+                <input type="file" th:object="${imgFile}" name="imgFile" class="form-control" id="inputGroupFile02">
+                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+            </div>
 
-    <input type="submit" value="Создать">
+        </div>
+        <button type="submit" class="btn btn-primary">Создать</button>
 
 
+    </div>
 </form>
+
+<th:block th:replace="block/scripts :: scripts"></th:block>
 
 </body>
 </html>

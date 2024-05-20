@@ -58,10 +58,8 @@ public class TeacherService {
         updatedTeacher.setMaximumWorkingHours(maximumWorkingHours);
 
         if(file.isEmpty()){
-            System.out.println(1);
             updatedTeacher.setImageFileName(teacherToUpdate.getImageFileName());
         } else {
-            System.out.println(2);
             updatedTeacher.setImageFileName(saveImage(file));
         }
 
