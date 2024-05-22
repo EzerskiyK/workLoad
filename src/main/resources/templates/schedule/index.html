@@ -1,22 +1,129 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
+
 </head>
 <body>
+<th:block th:replace="blocks/html/navbar :: navbar"></th:block>
 
-<div th:each="schedule : ${schedules}">
-    <a th:href="@{/schedule/{id}(id=${schedule.getScheduleId()})}"
-       th:text="${schedule.getEducationalDiscipline().getEducationalDisciplineName() +
-        ', Преподователь: ' + schedule.getActualTeacher()?.getFio() +
-        ', Группа: ' + schedule.getSubGroupOfStudents().getSubGroupName()}">user</a>
+<div class="container text-center md-5">
+    <h4 class="mt-5">Нагрузка</h4>
 </div>
+
+<div class="m-4">
+    <div class="row row-cols-4 g-4 mt-3">
+        <div th:each="schedule, iterStat : ${schedules}">
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${schedule.getEducationalDiscipline().getEducationalDisciplineName() + ' ' + schedule.subGroupOfStudents.mainGroup.speciality}"></h5>
+                        <div th:if="${schedule.getActualTeacher()} == null">
+                            <div style="color: crimson"> Нет преподователя!</div>
+                        </div>
+                        <div th:if="${schedule.getActualTeacher()} != null">
+                            <p class="card-text" th:text="'Преподователь: ' + ${schedule.getActualTeacher()?.getFio()}"></p>
+                        </div>
+                        <p class="card-text" th:text="'Группа: ' + ${schedule.getSubGroupOfStudents().getSubGroupName()}"></p>
+
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#exampleModal' + ${iterStat.index}">
+                            Подробнее
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" th:id="'exampleModal' + ${iterStat.index}" tabindex="-1" th:aria-labelledby="'exampleModalLabel' + ${iterStat.index}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" th:id="'exampleModalLabel' + ${iterStat.index}" th:text="${schedule.getEducationalDiscipline().getEducationalDisciplineName()}"></h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="card-text" th:text="'Преподователь: ' + ${schedule.getActualTeacher()?.getFio()}"></p>
+                                        <p class="card-text" th:text="'Группа: ' + ${schedule.getSubGroupOfStudents().getSubGroupName()}"></p>
+                                        <p class="card-text" th:text="'Длительность предмета: ' + ${schedule.getEducationalDiscipline().getEducationalDisciplineDuration()}"></p>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <form th:method="DELETE" th:action="@{/main/schedule}">
+                                            <input type="hidden" name="scheduleId" th:value="${schedule.scheduleId}">
+                                            <button type="submit" class="btn btn-danger" >Удалить</button>
+                                        </form>
+
+                                        <form th:method="GET" th:action="@{/main/schedule/{id}/edit(id=${schedule.scheduleId})}">
+                                            <button type="submit" class="btn btn-primary">Редактировать</button>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <br/>
 <hr/>
 
-<a href="/schedule/new">Добавть новое расписание</a>
+<p class="ms-3">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+        Добавить новое расписание
+    </button>
+</p>
+<div style="min-height: 500px;">
+    <div class="collapse collapse-horizontal ms-3" id="collapseWidthExample">
+        <div class="card card-body" style="width: 600px;">
+            <form th:method="POST" th:action="@{/main/schedule}" th:object = "${schedule}">
+                <div class="row g-3">
+                    <div class="col-12">
 
+                        <label for="teacher">Выберите преподователя </label>
+                        <select th:object="${schedule}" th:field="*{actualTeacher}" id="teacher" class="form-select">
+                            <option th:each="teacher : ${teachers}" th:value="${teacher.getTeacherId()}" th:text="${teacher.getFio()}">
+                            </option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-6">
+
+                        <label for="educationalDisciplines">Выберите предмет </label>
+                        <select th:object="${schedule}" th:field="*{educationalDiscipline}" id="educationalDisciplines" class="form-select">
+                            <option th:each="educationalDiscipline : ${educationalDisciplines}" th:value="${educationalDiscipline.getEducationalDisciplineId()}" th:text="${educationalDiscipline.getEducationalDisciplineName()}">
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label for="group">Выберите группу </label>
+                        <select th:object="${group}" th:field="*{groupId}" id="group" class="form-select">
+                            <option th:each="group : ${groups}" th:value="${group.getGroupId()}" th:text="${group.getSpeciality() + group.getYearOfEntering()}">
+                            </option>
+                        </select>
+
+                    </div>
+                    <div class="col-12">
+
+                    </div>
+                    <button type="submit" class="btn btn-primary">Создать</button>
+
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
 </body>
 </html>
 

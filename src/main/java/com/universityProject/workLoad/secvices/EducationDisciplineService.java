@@ -2,7 +2,6 @@ package com.universityProject.workLoad.secvices;
 
 import com.universityProject.workLoad.model.EducationalDiscipline;
 import com.universityProject.workLoad.repositories.EducationDisciplineRepository;
-import org.apache.catalina.startup.PasswdUserDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

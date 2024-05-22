@@ -1,6 +1,5 @@
 package com.universityProject.workLoad.controllers;
 
-import com.universityProject.workLoad.model.AcademicDegree;
 import com.universityProject.workLoad.model.GroupOfStudents;
 import com.universityProject.workLoad.secvices.GroupOfStudentsService;
 import jakarta.validation.Valid;
@@ -11,7 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/group")
+@RequestMapping("/settings/group")
 public class GroupOfStudentsController {
     private final GroupOfStudentsService groupOfStudentsService;
 
@@ -21,31 +20,22 @@ public class GroupOfStudentsController {
     }
 
     @GetMapping()
-    public String index(Model model) {
+    public String index(@ModelAttribute GroupOfStudents group,Model model) {
         model.addAttribute("groups", groupOfStudentsService.findAll());
         return "group/index";
-    }
-
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("group", groupOfStudentsService.findById(id));
-        model.addAttribute("subGroups", groupOfStudentsService.findSubGroupsByGroupId(id));
-        return "group/show";
-    }
-
-    @GetMapping("/new")
-    public String newGroup(@ModelAttribute GroupOfStudents groupOfStudents) {
-        return "group/new";
     }
 
     @PostMapping()
     public String createGroup(@ModelAttribute @Valid GroupOfStudents groupOfStudents,
                               BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
-            return "group/new";
+            return "group/index";
         }
+
         groupOfStudentsService.save(groupOfStudents);
-        return "redirect:/group";
+
+        return "redirect:/settings/group";
     }
 
     @GetMapping("/{id}/edit")
@@ -58,16 +48,19 @@ public class GroupOfStudentsController {
     public String update(@ModelAttribute("group") @Valid GroupOfStudents groupOfStudents,
                          BindingResult bindingResult,
                          @PathVariable("id") int id) {
+
         if (bindingResult.hasErrors()) {
             return "group/edit";
         }
+
         groupOfStudentsService.update(id,groupOfStudents);
-        return "redirect:/group/{id}";
+
+        return "redirect:/settings/group";
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    @DeleteMapping()
+    public String delete(@RequestParam("groupId") int id) {
         groupOfStudentsService.delete(id);
-        return "redirect:/group";
+        return "redirect:/settings/group";
     }
 }

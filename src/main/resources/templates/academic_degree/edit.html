@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <th:block th:replace="block/head :: head"></th:block>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
 </head>
 <body>
-    <th:block th:replace="block/navbar :: navbar"></th:block>
+    <th:block th:replace="blocks/html/navbar :: navbar"></th:block>
 
 <div class="container text-center md-5">
 
@@ -13,7 +13,8 @@
     <br>
     <br>
     <div class="ms-4">
-        <form th:method="PATCH" th:action="@{/academic_degree/{id}(id=${academicDegree.getAcademicDegreeId()})}" th:object = "${academicDegree}" class="row g-3 needs-validation" novalidate>
+        <form th:method="PATCH" th:action="@{/settings/academic_degree/{id}(id=${academicDegree.getAcademicDegreeId()})}" th:object = "${academicDegree}" class="row g-3">
+            <input type="hidden" th:field="*{academicDegreeId}" th:value="${academicDegree.academicDegreeId}">
             <div class="col-md-4">
                 <label for="validationCustom01" class="form-label">Название должности</label>
                 <input type="text" class="form-control" id="validationCustom01" th:field="*{academicDegreeName}" required>
@@ -27,13 +28,14 @@
 
             </div>
 
+
             <div class="col-12">
                 <button class="btn btn-primary" type="submit">Изменить</button>
-                <a href="/academic_degree">Вернуться</a>
+                <a href="/settings/academic_degree">Вернуться</a>
 
             </div>
         </form>
     </div>
-    <th:block th:replace="block/scripts :: scripts"></th:block>
+    <th:block th:replace="blocks/html/scripts :: scripts"></th:block>
 </body>
 </html>

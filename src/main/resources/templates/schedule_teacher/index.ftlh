@@ -1,4 +1,4 @@
-<#import "../blocks/common.ftlh" as c>
+<#import "../blocks/freemarker/common.ftlh" as c>
 
 <@c.page>
 
@@ -6,7 +6,7 @@
         <h2>Переподовательский состав</h2>
     </div>
 
-    <form action="/schedule_teacher" method="get" class="row row-cols-lg-auto g-3  align-items-center">
+    <form action="/main/schedule_teacher" method="get" class="row row-cols-lg-auto g-3  align-items-center">
         <div class="col-12">
             <input type="text" name="query" class="form-control " placeholder="Поиск по названию">
         </div>
@@ -21,7 +21,7 @@
             <div class="col ">
                 <div class="card ">
                     <#if teacher.imageFileName??>
-                        <img alt="Card image cap" class="card-img-top img-fluid" src="images/teachersImages/${teacher.imageFileName}" style="width: 100%; height: 17rem;" />
+                        <img alt="Card image cap" class="card-img-top img-fluid" src="/images/teachersImages/${teacher.imageFileName}" style="width: 100%; height: 17rem;" />
                     <#else>
                         <img alt="" class="card-img-top img-fluid" src="/defaultImages/defoultImage.png" style="width: 100%; height: 17rem;" />
 
@@ -34,7 +34,7 @@
                             Занятость: ${teacher.actualWorkingHours} из ${teacher.maximumWorkingHours}
 
                         </p>
-                        <a href="/schedule_teacher/${teacher.teacherId}" class="btn btn-primary">Подробнее</a>
+                        <a href="/main/schedule_teacher/${teacher.teacherId}" class="btn btn-primary">Подробнее</a>
                         <#if teacher.actualWorkingHours gt teacher.maximumWorkingHours >
                             <span style="color: crimson" class="ms-3">Переработка! </span>
 

@@ -1,4 +1,4 @@
-<#import "../blocks/common.ftlh" as c>
+<#import "../blocks/freemarker/common.ftlh" as c>
 
 <@c.page>
     <div class="container text-center md-5">
@@ -104,7 +104,7 @@
                                             <h5 class="modal-title" id="exampleModalLabel${subject_index}">Выберите группу студентов</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form action="/schedule_teacher/${teacher.teacherId}" method="post">
+                                        <form action="/main/schedule_teacher/${teacher.teacherId}" method="post">
                                             <div class="modal-body">
                                                 <div class="mb-3">
                                                     <label for="groupOfStudents${subject_index}" class="form-label">Для добавления предмета в нагрузку преподователя выберите группу студентов для него</label>

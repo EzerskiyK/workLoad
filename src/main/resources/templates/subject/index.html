@@ -1,23 +1,117 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
+
 </head>
 <body>
+<th:block th:replace="blocks/html/navbar :: navbar"></th:block>
 
-<div th:each="subject : ${subjects}">
-    <a th:href="@{/subject/{id}(id=${subject.getEducationalDisciplineId()})}"
-       th:text="${subject.getEducationalDisciplineName() +
-        ', Подолжительность: ' + subject.getEducationalDisciplineDuration() +
-        ', Рекомендуемый преподователь : ' + subject.getRecommendedTeacher().getFio() +
-        ', Максимальное число студентов: ' + subject.getMaxStudents()}">user</a>
+<div class="container text-center md-5">
+    <h4 class="mt-5">Учебные дисциплины</h4>
 </div>
+
+<br>
+<br>
+
+<div class="m-4">
+    <div class="row row-cols-4 g-4 mt-3">
+        <div th:each="subject, iterStat : ${subjects}">
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${subject.educationalDisciplineName}"></h5>
+                        <p class="card-text" th:text="'Продолжительность: ' + ${subject.educationalDisciplineDuration}"></p>
+                        <p class="card-text" th:text="'Макс. студентов: ' + ${subject.maxStudents}"></p>
+
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#exampleModal' + ${iterStat.index}">
+                            Подробнее
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" th:id="'exampleModal' + ${iterStat.index}" tabindex="-1" th:aria-labelledby="'exampleModalLabel' + ${iterStat.index}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" th:id="'exampleModalLabel' + ${iterStat.index}" th:text="${subject.educationalDisciplineName}"></h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="card-text" th:text="'Продолжительность: ' + ${subject.educationalDisciplineDuration}"></p>
+                                        <p class="card-text" th:text="'Макс. студентов: ' + ${subject.maxStudents}"></p>
+                                        <p class="card-text" th:text="'Рек. преподователь: ' + ${subject.recommendedTeacher.fio}"></p>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <form th:method="DELETE" th:action="@{/settings/subject}">
+                                            <input type="hidden" name="subjectId" th:value="${subject.educationalDisciplineId}">
+                                            <button type="submit" class="btn btn-danger" >Удалить</button>
+                                        </form>
+
+                                        <form th:method="GET" th:action="@{/settings/subject/{id}/edit(id=${subject.getEducationalDisciplineId()})}">
+                                            <button type="submit" class="btn btn-primary">Редактировать</button>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <br/>
 <hr/>
 
-<a href="/subject/new">Добавть новый предмет</a>
+<p class="ms-3">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+        Добавить новый предмет
+    </button>
+</p>
+<div style="min-height: 500px;">
+    <div class="collapse collapse-horizontal ms-3" id="collapseWidthExample">
+        <div class="card card-body" style="width: 600px;">
+            <form th:method="POST" th:action="@{/settings/subject}" th:object = "${educationalDiscipline}">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label for="name">Введите название предмета</label>
+                        <input type="text" class="form-control" th:field="*{educationalDisciplineName}" id="name"/>
+                        <div style="color: crimson" th:if="${#fields.hasErrors('educationalDisciplineName')}" th:errors="*{educationalDisciplineName}">Full name error</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="duration">Введите продолжительность лекций предмета</label>
+                        <input type="text" class="form-control" th:field="*{educationalDisciplineDuration}" id="duration"/>
+                        <div style="color: crimson" th:if="${#fields.hasErrors('educationalDisciplineDuration')}" th:errors="*{educationalDisciplineDuration}">Full name error</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="maxStudents">Введите максимальное число студентов</label>
+                        <input type="text" class="form-control" th:field="*{maxStudents}" id="maxStudents"/>
+                        <div style="color: crimson" th:if="${#fields.hasErrors('maxStudents')}" th:errors="*{maxStudents}">Full name error</div>
+                    </div>
+                    <div class="col-12">
+                        <label for="teacher">Выберите преподователя </label>
+                        <select th:object="${educationalDiscipline}" th:field="*{recommendedTeacher}" id="teacher" class="form-select">
+                            <option th:each="recTeacher : ${recTeachers}" th:value="${recTeacher.getTeacherId()}" th:text="${recTeacher.getFio()}">
+                            </option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Создать</button>
 
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
 </body>
 </html>
 

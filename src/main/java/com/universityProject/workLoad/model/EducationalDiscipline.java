@@ -14,7 +14,7 @@ public class EducationalDiscipline {
     @Id
     @Column(name = "education_discipline_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int educationalDisciplineId;
+    private Integer educationalDisciplineId;
 
     @Column(name = "education_discipline_name")
     @NotNull(message = "Это поле не должно быть пустым")
@@ -52,11 +52,11 @@ public class EducationalDiscipline {
         this.maxStudents = maxStudents;
     }
 
-    public int getEducationalDisciplineId() {
+    public Integer getEducationalDisciplineId() {
         return educationalDisciplineId;
     }
 
-    public void setEducationalDisciplineId(int educationalDisciplineId) {
+    public void setEducationalDisciplineId(Integer educationalDisciplineId) {
         this.educationalDisciplineId = educationalDisciplineId;
     }
 

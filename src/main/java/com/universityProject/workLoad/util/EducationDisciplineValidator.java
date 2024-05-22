@@ -1,5 +1,6 @@
 package com.universityProject.workLoad.util;
 
+import com.universityProject.workLoad.model.AcademicDegree;
 import com.universityProject.workLoad.model.EducationalDiscipline;
 import com.universityProject.workLoad.secvices.EducationDisciplineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,19 @@ public class EducationDisciplineValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         EducationalDiscipline ed = (EducationalDiscipline) target;
-        if(educationDisciplineService.findByEducationalDisciplineName(ed.getEducationalDisciplineName()).isPresent()){
-            errors.rejectValue("educationalDisciplineName", "", "Предмет с таким названием уже существует");
+        if(ed.getEducationalDisciplineId() == null){
+            if(educationDisciplineService.findByEducationalDisciplineName(ed.getEducationalDisciplineName()).isPresent()){
+                errors.rejectValue("educationalDisciplineName", "", "Предмет с таким названием уже существует");
+            }
+        }else{
+            EducationalDiscipline educationDisciplineToUpdate = educationDisciplineService.findById(ed.getEducationalDisciplineId());
+            if(educationDisciplineToUpdate != null && !educationDisciplineToUpdate.getEducationalDisciplineName().equals(ed.getEducationalDisciplineName())
+            && educationDisciplineService.findByEducationalDisciplineName(ed.getEducationalDisciplineName()).isPresent()){
+                errors.rejectValue("educationalDisciplineName", "", "Предмет с таким названием уже существует");
+            }
         }
 
+
     }
+
 }

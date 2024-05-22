@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <th:block th:replace="block/head :: head"></th:block>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
 </head>
 <body>
-<th:block th:replace="block/navbar :: navbar"></th:block>
+<th:block th:replace="blocks/html/navbar :: navbar"></th:block>
 
 <div class="container text-center md-5">
 
@@ -47,12 +47,12 @@
                                     </div>
                                     <div class="modal-footer">
 
-                                        <form th:method="DELETE" th:action="@{/academic_degree}">
+                                        <form th:method="DELETE" th:action="@{/settings/academic_degree}">
                                             <input type="hidden" name="academicDegreeId" th:value="${academicDegree.academicDegreeId}">
                                             <button type="submit" class="btn btn-danger" >Удалить</button>
                                         </form>
 
-                                        <form th:method="GET" th:action="@{/academic_degree/{id}/edit(id=${academicDegree.academicDegreeId})}">
+                                        <form th:method="GET" th:action="@{/settings/academic_degree/{id}/edit(id=${academicDegree.academicDegreeId})}">
                                             <button type="submit" class="btn btn-primary">Редактировать</button>
                                         </form>
 
@@ -82,7 +82,7 @@
 <div style="min-height: 500px;">
     <div class="collapse collapse-horizontal ms-3" id="collapseWidthExample">
         <div class="card card-body" style="width: 600px;">
-            <form th:method="POST" th:action="@{/academic_degree}" th:object = "${academicDegree}">
+            <form th:method="POST" th:action="@{/settings/academic_degree}" th:object = "${academicDegree}">
                 <div class="row">
                     <div class="col">
                         <label for="name" class="form-label">Название</label>
@@ -103,7 +103,7 @@
 
 
 
-<th:block th:replace="block/scripts :: scripts"></th:block>
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
 </body>
 </html>
 

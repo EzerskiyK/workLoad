@@ -38,10 +38,10 @@ public class AcademicDegreeService {
 
     @Transactional
     public void update(int id,AcademicDegree updatedAcademicDegree) {
-        AcademicDegree result = academicDegreeRepository.findById(id).get();
-        updatedAcademicDegree.setAcademicDegreeId(result.getAcademicDegreeId());
-        updatedAcademicDegree.setTeacherList(result.getTeacherList());
-        System.out.println(result.toString());
+
+        AcademicDegree academicDegreeToUpdate = academicDegreeRepository.findById(id).get();
+        updatedAcademicDegree.setAcademicDegreeId(academicDegreeToUpdate.getAcademicDegreeId());
+        updatedAcademicDegree.setTeacherList(academicDegreeToUpdate.getTeacherList());
         academicDegreeRepository.save(updatedAcademicDegree);
     }
 
@@ -52,11 +52,14 @@ public class AcademicDegreeService {
 
 
     public List<Teacher> findTeachersByAcademicDegreeId(int id) {
+
         Optional<AcademicDegree> academicDegree = academicDegreeRepository.findById(id);
+
         if(academicDegree.isPresent()) {
             return academicDegree.get().getTeacherList();
-        }else
+        }else {
             return Collections.emptyList();
+        }
     }
 
     public Optional<AcademicDegree> findAcademicDegreeByName(String name) {

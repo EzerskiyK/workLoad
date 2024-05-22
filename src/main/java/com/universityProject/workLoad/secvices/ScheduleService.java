@@ -1,17 +1,13 @@
 package com.universityProject.workLoad.secvices;
 
 import com.universityProject.workLoad.model.*;
-import com.universityProject.workLoad.repositories.GroupOfStudentsRepository;
 import com.universityProject.workLoad.repositories.ScheduleRepository;
 import com.universityProject.workLoad.repositories.SubGroupOfStudentsRepository;
-import com.universityProject.workLoad.repositories.TeacherRepository;
-import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,22 +15,15 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
-    private final TeacherService teacherService;
-    private final EducationDisciplineService educationDisciplineService;
     private final GroupOfStudentsService groupOfStudentsService;
     private final SubGroupOfStudentsService subGroupOfStudentsService;
-    private final SubGroupOfStudentsRepository groupOfStudentsRepository;
     private final SubGroupOfStudentsRepository subGroupOfStudentsRepository;
 
     @Autowired
-    public ScheduleService(ScheduleRepository scheduleRepository, TeacherService teacherService, EducationDisciplineService educationDisciplineService, GroupOfStudentsService groupOfStudentsService, SubGroupOfStudentsService subGroupOfStudentsService, SubGroupOfStudentsRepository groupOfStudentsRepository, SubGroupOfStudentsRepository subGroupOfStudentsRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository, GroupOfStudentsService groupOfStudentsService, SubGroupOfStudentsService subGroupOfStudentsService, SubGroupOfStudentsRepository subGroupOfStudentsRepository) {
         this.scheduleRepository = scheduleRepository;
-        this.teacherService = teacherService;
-        this.educationDisciplineService = educationDisciplineService;
         this.groupOfStudentsService = groupOfStudentsService;
         this.subGroupOfStudentsService = subGroupOfStudentsService;
-
-        this.groupOfStudentsRepository = groupOfStudentsRepository;
         this.subGroupOfStudentsRepository = subGroupOfStudentsRepository;
     }
 
@@ -50,8 +39,6 @@ public class ScheduleService {
     @Transactional
     public void save(Schedule schedule, GroupOfStudents groupOfStudentsInfo) {
 
-        System.out.println("Бьтмлвытмвтымтвыдмвылд");
-
         schedule.getActualTeacher().addActualWorkingHours(schedule.getEducationalDiscipline().getEducationalDisciplineDuration());
 
         Integer studentLimit = schedule.getEducationalDiscipline().getMaxStudents();
@@ -59,7 +46,6 @@ public class ScheduleService {
         GroupOfStudents groupOfStudents = groupOfStudentsService.findById(groupOfStudentsInfo.getGroupId());
 
         if( studentLimit == null ||  studentLimit >= groupOfStudents.getNumberOfStudents() ){
-
 
             SubGroupOfStudents subGroup = createSubGroup(groupOfStudents);
             subGroup.addSchedule(schedule);
@@ -70,8 +56,6 @@ public class ScheduleService {
         }else {
 
             List<SubGroupOfStudents> subGroupsOfStudents = createSubGroups(groupOfStudents, studentLimit);
-
-
 
             for(int i = 0; i < subGroupsOfStudents.size(); i++){
 
@@ -93,7 +77,6 @@ public class ScheduleService {
                     getEducationalDiscipline().getEducationalDisciplineDuration());
         }
 
-
         updatedSchedule.setScheduleId(scheduleToUpdate.getScheduleId());
         updatedSchedule.setSubGroupOfStudents(scheduleToUpdate.getSubGroupOfStudents());
         updatedSchedule.setEducationalDiscipline(scheduleToUpdate.getEducationalDiscipline());
@@ -103,8 +86,6 @@ public class ScheduleService {
         scheduleRepository.save(updatedSchedule);
     }
 
-
-
     private SubGroupOfStudents createSubGroup(GroupOfStudents groupOfStudents){
 
         String nameOfSubgroup = groupOfStudents.getSpeciality() + "."
@@ -113,13 +94,7 @@ public class ScheduleService {
 
         Optional<SubGroupOfStudents> subGroupOfStudents = subGroupOfStudentsService.findByName(nameOfSubgroup);
 
-        if(subGroupOfStudents.isPresent()){
-            return subGroupOfStudents.get();
-        }else {
-            SubGroupOfStudents subGroupOfStudentsPresent = new SubGroupOfStudents(nameOfSubgroup, groupOfStudents, groupOfStudents.getNumberOfStudents());
-            return subGroupOfStudentsPresent;
-        }
-
+        return subGroupOfStudents.orElseGet(() -> new SubGroupOfStudents(nameOfSubgroup, groupOfStudents, groupOfStudents.getNumberOfStudents()));
     }
 
     private List<SubGroupOfStudents> createSubGroups(GroupOfStudents groupOfStudents,int studentLimit ){
@@ -127,11 +102,8 @@ public class ScheduleService {
         List<SubGroupOfStudents> subGroupOfStudentsList = new ArrayList<>();
 
         int numberOfSubGroups = (int)Math.ceil((double) groupOfStudents.getNumberOfStudents() / (double) studentLimit);
-        int numberOfStudentsInGroups = groupOfStudents.getNumberOfStudents() / (int) numberOfSubGroups;
+        int numberOfStudentsInGroups = groupOfStudents.getNumberOfStudents() / numberOfSubGroups;
         int numberToAddStudents = (int) (((groupOfStudents.getNumberOfStudents() /(double) numberOfSubGroups) - numberOfStudentsInGroups) * numberOfSubGroups);
-
-        System.out.println("( " + groupOfStudents.getNumberOfStudents() + " / " + numberOfSubGroups + " ) " +
-                " - " + numberOfStudentsInGroups + " ) " +  " * " + numberOfSubGroups);
 
         for (int i = 0; i != numberOfSubGroups; i++) {
 
@@ -160,30 +132,23 @@ public class ScheduleService {
 
                 subGroupOfStudentsList.add(new SubGroupOfStudents(nameOfSubgroup, groupOfStudents, numberOfStudents));
             }
-
         }
-
         return subGroupOfStudentsList;
-
     }
-
-
-
-
-
 
     @Transactional
     public void delete(int id){
-
-        scheduleRepository.findById(id).get().getActualTeacher()
-                .subtractActualWorkingHours(scheduleRepository
-                        .findById(id).get().getEducationalDiscipline()
-                        .getEducationalDisciplineDuration());
-
+        if( scheduleRepository.findById(id).get().getActualTeacher() != null){
+            scheduleRepository.findById(id).get().getActualTeacher()
+                    .subtractActualWorkingHours(scheduleRepository
+                            .findById(id).get().getEducationalDiscipline()
+                            .getEducationalDisciplineDuration());
+        }
         scheduleRepository.deleteById(id);
     }
 
 
-
-
+    public Boolean notAllSubjectHaveATeacher() {
+       return scheduleRepository.findAll().stream().anyMatch(schedule -> schedule.getActualTeacher() == null);
+    }
 }

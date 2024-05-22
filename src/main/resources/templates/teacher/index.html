@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <th:block th:replace="block/head :: head"></th:block>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
 </head>
 <body>
-<th:block th:replace="block/navbar :: navbar"></th:block>
+<th:block th:replace="blocks/html/navbar :: navbar"></th:block>
 
 <div class="container text-center md-5">
     <h4 class="mt-5">Преподователи</h4>
@@ -59,12 +59,12 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <form th:method="DELETE" th:action="@{/teacher}">
+                                        <form th:method="DELETE" th:action="@{/settings/teacher}">
                                             <input type="hidden" name="teacherId" th:value="${teacher.teacherId}">
                                             <button type="submit" class="btn btn-danger">Удалить</button>
                                         </form>
 
-                                        <form th:method="GET" th:action="@{/teacher/{id}/edit(id=${teacher.teacherId})}">
+                                        <form th:method="GET" th:action="@{/settings/teacher/{id}/edit(id=${teacher.teacherId})}">
                                             <button type="submit" class="btn btn-primary">Редактировать</button>
                                         </form>
                                     </div>
@@ -87,7 +87,7 @@
 <div style="min-height: 500px;">
     <div class="collapse collapse-horizontal ms-3" id="collapseWidthExample">
         <div class="card card-body" style="width: 600px;">
-            <form th:method="POST" th:action="@{/teacher}" th:object = "${teacher}" enctype="multipart/form-data">
+            <form th:method="POST" th:action="@{/settings/teacher}" th:object = "${teacher}" enctype="multipart/form-data">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="fio" class="form-label">Фамилия Имя Отчество</label>
@@ -101,11 +101,6 @@
                     </div>
                     <div class="col-12">
                         <label for="academicDegree" class="form-label">Преподовательская должность</label>
-<!--                        <select id="academicDegree" class="form-select">-->
-<!--                            <option selected>Choose...</option>-->
-<!--                            <option>...</option>-->
-<!--                        </select>-->
-
                         <select th:object="${teacher}" th:field="*{academicDegree}" id="academicDegree" class="form-select">
                             <option th:each="academicDegree : ${academicDegrees}" th:value="${academicDegree.getAcademicDegreeId()}" th:text="${academicDegree.getAcademicDegreeName()}">
                             </option>
@@ -129,13 +124,7 @@
 </div>
 
 
-
-
-
-<a href="/teacher/new">Добавть нового преподователя</a>
-
-
-<th:block th:replace="block/scripts :: scripts"></th:block>
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
 
 </body>
 </html>

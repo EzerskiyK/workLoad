@@ -1,6 +1,5 @@
 package com.universityProject.workLoad.secvices;
 
-import com.universityProject.workLoad.model.AcademicDegree;
 import com.universityProject.workLoad.model.GroupOfStudents;
 import com.universityProject.workLoad.model.SubGroupOfStudents;
 import com.universityProject.workLoad.repositories.GroupOfStudentsRepository;
@@ -39,7 +38,9 @@ public class GroupOfStudentsService {
 
     @Transactional
     public void update(int id, GroupOfStudents updatedGroupOfStudents) {
+
         GroupOfStudents toUpdateGroupOfStudents = groupOfStudentsRepository.findById(id).get();
+
         updatedGroupOfStudents.setGroupId(toUpdateGroupOfStudents.getGroupId());
         updatedGroupOfStudents.setSubGropOfStudents(toUpdateGroupOfStudents.getSubGropOfStudents());
 
@@ -52,10 +53,13 @@ public class GroupOfStudentsService {
     }
 
     public List<SubGroupOfStudents> findSubGroupsByGroupId(int groupId) {
+
         Optional<GroupOfStudents> groupOfStudents = groupOfStudentsRepository.findById(groupId);
+
         if(groupOfStudents.isPresent()) {
             return groupOfStudents.get().getSubGropOfStudents();
         }
+
         return Collections.emptyList();
     }
 }

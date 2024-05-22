@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Редактирование человека</title>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
+
 </head>
 <body>
+<th:block th:replace="blocks/html/navbar :: navbar"></th:block>
 
-<form th:method="PATCH" th:action="@{/schedule/{id}(id=${schedule.getScheduleId()})}" th:object = "${schedule}">
-    <label for="teacher">Выберите преподователя </label>
-    <select th:object="${schedule}" th:field="*{actualTeacher}" id="teacher">
-        <option th:each="teacher : ${teachers}" th:value="${teacher.getTeacherId()}" th:text="${teacher.getFio()}">
-        </option>
-    </select>
-    <!--    <input type="text" th:field="*{workLimit}" id="workLimit"/>-->
-    <!--    <div style="color: crimson" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">Year error</div>-->
-    <br>
+<div class="container text-center md-5">
+    <h4 class="mt-5">Редактирование</h4>
+</div>
 
-    <input type="submit" value="Создать">
+<br>
+<br>
 
-</form>
+<div class="ms-4 me-4">
+
+    <form th:method="PATCH" th:action="@{/main/schedule/{id}(id=${schedule.getScheduleId()})}" th:object = "${schedule}">
+        <input type="hidden" th:field="*{scheduleId}" th:value="${schedule.getScheduleId()}">
+
+        <div class="row g-3">
+            <div class="col-12">
+                <label for="teacher">Выберите преподователя </label>
+                <select th:object="${schedule}" th:field="*{actualTeacher}" id="teacher" class="form-select">
+                    <option th:each="teacher : ${teachers}" th:value="${teacher.getTeacherId()}" th:text="${teacher.getFio()}">
+                    </option>
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Создать</button>
+                <a href="/main/schedule">Вернуться</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
 
 </body>
 </html>

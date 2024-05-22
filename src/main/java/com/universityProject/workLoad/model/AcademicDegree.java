@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class AcademicDegree {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int academicDegreeId;
+    private Integer academicDegreeId;
 
     @Column(name = "academic_degree_name")
     @NotNull(message = "Это поле не должно быть пустым!")
@@ -37,11 +36,11 @@ public class AcademicDegree {
         this.workLimit = workLimit;
     }
 
-    public int getAcademicDegreeId() {
+    public Integer getAcademicDegreeId() {
         return academicDegreeId;
     }
 
-    public void setAcademicDegreeId(int academicDegreeId) {
+    public void setAcademicDegreeId(Integer academicDegreeId) {
         this.academicDegreeId = academicDegreeId;
     }
 

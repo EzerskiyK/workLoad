@@ -41,8 +41,8 @@ public class TeacherService {
 
     @Transactional
     public void save(Teacher teacher, MultipartFile file) throws IOException {
+
         if(!file.isEmpty()){
-            System.out.println("Соси");
             teacher.setImageFileName(saveImage(file));
         }
 
@@ -104,5 +104,9 @@ public class TeacherService {
             return teacherRepository.findByFioContainsIgnoreCaseOrderByFio(query);
         }
         return findAll();
+    }
+
+    public Boolean teachersHasOverwork() {
+        return teacherRepository.findAll().stream().anyMatch(teacher -> teacher.getActualWorkingHours()>teacher.getMaximumWorkingHours());
     }
 }

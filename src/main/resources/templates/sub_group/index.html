@@ -1,19 +1,82 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
+
 </head>
 <body>
 
-<div th:each="subGroup : ${subGroups}">
-    <a th:href="@{/sub_group/{id}(id=${subGroup.getSubGroupOfStudentId()})}"
-       th:text="${subGroup.getSubGroupName() +
-       ', Группа: ' + subGroup.getMainGroup().getSpeciality() + subGroup.getMainGroup().getYearOfEntering()+
-       ', Число студентов: ' + subGroup.getNumberOfStudents()}">user</a>
+<th:block th:replace="blocks/html/navbar :: navbar"></th:block>
+<div class="container text-center md-5">
+    <h4 class="mt-5">Подгруппы студентов</h4>
 </div>
+
+<br>
+<br>
+
+<div class="m-4">
+    <div class="row row-cols-4 g-4 mt-3">
+        <div th:each="subGroup, iterStat : ${subGroups}">
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${subGroup.subGroupName}"></h5>
+                        <p class="card-text" th:text="'Группа: ' + ${subGroup.mainGroup.speciality + ' ' + subGroup.mainGroup.yearOfEntering}"></p>
+                        <p class="card-text" th:text="'Количество студентов: ' + ${subGroup.numberOfStudents}"></p>
+
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#exampleModal' + ${iterStat.index}">
+                            Подробнее
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" th:id="'exampleModal' + ${iterStat.index}" tabindex="-1" th:aria-labelledby="'exampleModalLabel' + ${iterStat.index}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" th:id="'exampleModalLabel' + ${iterStat.index}" th:text="${subGroup.subGroupName}"></h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="card-text" th:text="'Группа: ' + ${subGroup.mainGroup.speciality + ' ' + subGroup.mainGroup.yearOfEntering}"></p>
+                                        <p class="card-text" th:text="'Количество студентов: ' + ${subGroup.numberOfStudents}"></p>
+                                        <div th:if="${subGroup.scheduleList.isEmpty()}">
+                                            Нет подгрупп у этой группы
+                                        </div>
+                                        <div th:if="${!subGroup.scheduleList.isEmpty()}">
+                                            <hr>
+                                            <p> <b> Учебные предметы этой подгруппы: </b></p>
+                                            <div th:each="schedule : ${subGroup.scheduleList}">
+                                                <p th:text="${schedule.educationalDiscipline.educationalDisciplineName + ' | ' + schedule.actualTeacher?.fio}"></p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <form th:method="DELETE" th:action="@{/settings/sub_group}">
+                                            <input type="hidden" name="subGroupId" th:value="${subGroup.subGroupOfStudentId}">
+                                            <button type="submit" class="btn btn-danger" >Удалить</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <br/>
 <hr/>
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
 
 </body>
 </html>

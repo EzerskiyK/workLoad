@@ -1,37 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Редактирование человека</title>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
+
 </head>
 <body>
+<th:block th:replace="blocks/html/navbar :: navbar"></th:block>
 
-<form th:method="PATCH" th:action="@{/subject/{id}(id=${subject.getEducationalDisciplineId()})}" th:object = "${subject}">
-    <label for="name">Введите название предмета</label>
-    <input type="text" th:field="*{educationalDisciplineName}" id="name"/>
-        <div style="color: crimson" th:if="${#fields.hasErrors('educationalDisciplineName')}" th:errors="*{educationalDisciplineName}">Full name error</div>
-    <br/>
-    <label for="duration">Введите продолжительность лекций предмета</label>
-    <input type="text" th:field="*{educationalDisciplineDuration}" id="duration"/>
-        <div style="color: crimson" th:if="${#fields.hasErrors('educationalDisciplineDuration')}" th:errors="*{educationalDisciplineDuration}">Full name error</div>
-    <br/>
+<div class="container text-center md-5">
+    <h4 class="mt-5">Редактирование</h4>
+</div>
 
-    <label for="maxStudents">Введите максимальное число студентов</label>
-    <input type="text" th:field="*{maxStudents}" id="maxStudents"/>
-        <div style="color: crimson" th:if="${#fields.hasErrors('maxStudents')}" th:errors="*{maxStudents}">Full name error</div>
-    <br/>
+<br>
+<br>
 
-    <label for="teacher">Выберите преподователя </label>
-    <select th:object="${educationalDiscipline}" th:field="*{recommendedTeacher}" id="teacher">
-        <option th:each="recTeacher : ${recTeachers}" th:value="${recTeacher.getTeacherId()}" th:text="${recTeacher.getFio()}">
-        </option>
-    </select>
-        <div style="color: crimson" th:if="${#fields.hasErrors('recommendedTeacher')}" th:errors="*{recommendedTeacher}">Year error</div>
+<div class="ms-4">
+    <form th:method="PATCH" th:action="@{/settings/subject/{id}(id=${subject.getEducationalDisciplineId()})}" th:object = "${subject}">
+        <input type="hidden" th:field="*{educationalDisciplineId}" th:value="${subject.getEducationalDisciplineId()}">
+        <div class="row g-3">
+            <div class="col-12">
+                <label for="name">Введите название предмета</label>
+                <input type="text" th:field="*{educationalDisciplineName}" class="form-control" id="name"/>
+                <div style="color: crimson" th:if="${#fields.hasErrors('educationalDisciplineName')}" th:errors="*{educationalDisciplineName}">Full name error</div>
+            </div>
+            <div class="col-md-6">
+                <label for="duration">Введите продолжительность лекций предмета</label>
+                <input type="text" th:field="*{educationalDisciplineDuration}" class="form-control" id="duration"/>
+                <div style="color: crimson" th:if="${#fields.hasErrors('educationalDisciplineDuration')}" th:errors="*{educationalDisciplineDuration}">Full name error</div>
+            </div>
+            <div class="col-md-6">
+                <label for="maxStudents">Введите максимальное число студентов</label>
+                <input type="text" th:field="*{maxStudents}" class="form-control" id="maxStudents"/>
+                <div style="color: crimson" th:if="${#fields.hasErrors('maxStudents')}" th:errors="*{maxStudents}">Full name error</div>
+            </div>
+            <div class="col-12">
+                <select th:object="${subject}" th:field="*{recommendedTeacher}" id="teacher" class="form-select">
+                    <option th:each="recTeacher : ${recTeachers}" th:value="${recTeacher.getTeacherId()}" th:text="${recTeacher.getFio()}">
+                    </option>
+                </select>
+                <div style="color: crimson" th:if="${#fields.hasErrors('recommendedTeacher')}" th:errors="*{recommendedTeacher}">Year error</div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Создать</button>
+                <a href="/settings/subject">Вернуться</a>
+            </div>
 
-    <input type="submit" value="Создать">
+        </div>
+    </form>
+</div>
 
 
-</form>
-
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
 </body>
 </html>

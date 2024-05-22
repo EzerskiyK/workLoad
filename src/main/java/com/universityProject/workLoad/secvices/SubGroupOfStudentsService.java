@@ -3,13 +3,11 @@ package com.universityProject.workLoad.secvices;
 import com.universityProject.workLoad.model.EducationalDiscipline;
 import com.universityProject.workLoad.model.Schedule;
 import com.universityProject.workLoad.model.SubGroupOfStudents;
-import com.universityProject.workLoad.repositories.EducationDisciplineRepository;
 import com.universityProject.workLoad.repositories.SubGroupOfStudentsRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.security.auth.Subject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,9 +46,7 @@ public class SubGroupOfStudentsService {
     }
 
     public Optional<SubGroupOfStudents> findByName(String name){
-
-        Optional<SubGroupOfStudents> subGroupOfStudents = subGroupOfStudentsRepository.findBySubGroupName(name);
-        return subGroupOfStudents;
+        return subGroupOfStudentsRepository.findBySubGroupName(name);
     }
 
     public void delete(int id) {

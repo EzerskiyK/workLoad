@@ -1,26 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Редактирование человека</title>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
+
 </head>
 <body>
+<th:block th:replace="blocks/html/navbar :: navbar"></th:block>
 
-<form th:method="PATCH" th:action="@{/group/{id}(id=${group.getGroupId()})}" th:object = "${group}">
-    <label for="speciality">Введите специальность</label>
-    <input type="text" th:field="*{speciality}" id="speciality"/>
-        <div style="color: crimson" th:if="${#fields.hasErrors('speciality')}" th:errors="*{speciality}">Full name error</div>
-    <br/>
-    <label for="yearOfEntering">Введите год образования этой группы </label>
-    <input type="text" th:field="*{yearOfEntering}" id="yearOfEntering"/>
-        <div style="color: crimson" th:if="${#fields.hasErrors('yearOfEntering')}" th:errors="*{yearOfEntering}">Year error</div>
-    <br/>
-    <label for="numberOfStudents">Введите число студентов в группе </label>
-    <input type="text" th:field="*{numberOfStudents}" id="numberOfStudents"/>
-        <div style="color: crimson" th:if="${#fields.hasErrors('numberOfStudents')}" th:errors="*{numberOfStudents}">Year error</div>
-    <br/>
-    <input type="submit" value="Создать">
-</form>
+<div class="container text-center md-5">
+    <h4 class="mt-5">Редактирование</h4>
+</div>
+
+<br>
+<br>
+
+<div class="ms-4">
+    <form th:method="PATCH" th:action="@{/settings/group/{id}(id=${group.getGroupId()})}" th:object = "${group}">
+        <input type="hidden" th:field="*{groupId}" th:value="${group.getGroupId()}">
+
+        <div class="row g-3">
+            <div class="col-12">
+                <label for="spec" class="form-label">Введите специальность</label>
+                <input type="text" th:field="*{speciality}" class="form-control" aria-label="Название" id="spec">
+                <div style="color: crimson" th:if="${#fields.hasErrors('speciality')}" th:errors="*{speciality}"> error</div>
+            </div>
+            <div class="col-md-6">
+                <label for="yearOfEntering" class="form-label">Год поступления</label>
+                <input type="text" th:field="*{yearOfEntering}" class="form-control" aria-label="Название" id="yearOfEntering">
+                <div style="color: crimson" th:if="${#fields.hasErrors('yearOfEntering')}" th:errors="*{yearOfEntering}"> error</div>
+            </div>
+            <div class="col-md-6">
+                <label for="numberOfStudents" class="form-label">Количество студентов в группе</label>
+                <input type="text" th:field="*{numberOfStudents}" class="form-control" aria-label="Название" id="numberOfStudents">
+                <div style="color: crimson" th:if="${#fields.hasErrors('numberOfStudents')}" th:errors="*{numberOfStudents}"> error</div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Создать</button>
+                <a href="/settings/group">Вернуться</a>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
 
 </body>
 </html>
