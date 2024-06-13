@@ -39,7 +39,7 @@
                                     <div class="modal-body">
                                         <p class="card-text" th:text="'Продолжительность: ' + ${subject.educationalDisciplineDuration}"></p>
                                         <p class="card-text" th:text="'Макс. студентов: ' + ${subject.maxStudents}"></p>
-                                        <p class="card-text" th:text="'Рек. преподователь: ' + ${subject.recommendedTeacher.fio}"></p>
+                                        <p class="card-text" th:text="'Рек. преподователь: ' + ${subject.recommendedTeacher?.fio}"></p>
                                     </div>
                                     <div class="modal-footer">
 

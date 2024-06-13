@@ -1,7 +1,7 @@
 package com.universityProject.workLoad.controllers;
 
 import com.universityProject.workLoad.model.AcademicDegree;
-import com.universityProject.workLoad.secvices.AcademicDegreeService;
+import com.universityProject.workLoad.services.AcademicDegreeService;
 import com.universityProject.workLoad.util.AcademicDegreeValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

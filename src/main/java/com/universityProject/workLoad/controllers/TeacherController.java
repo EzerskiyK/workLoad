@@ -1,8 +1,8 @@
 package com.universityProject.workLoad.controllers;
 
 import com.universityProject.workLoad.model.Teacher;
-import com.universityProject.workLoad.secvices.AcademicDegreeService;
-import com.universityProject.workLoad.secvices.TeacherService;
+import com.universityProject.workLoad.services.AcademicDegreeService;
+import com.universityProject.workLoad.services.TeacherService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${teacher.fio}"></h5>
                         <hr>
-                        <p class="card-text" th:text="'Должность: ' + ${teacher.academicDegree.academicDegreeName}"></p>
+                        <p class="card-text" th:text="'Должность: ' + ${teacher.academicDegree?.academicDegreeName}"></p>
                         <p class="card-text" th:text="'Рабочая ставка: ' + ${teacher.getWorkingRate()}"></p>
                         <p class="card-text" th:text="'Занятость: ' + ${teacher.actualWorkingHours} + '/' + ${teacher.getMaximumWorkingHours()}"></p>
                         <hr>
@@ -43,7 +43,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p class="card-text" th:text="'Преподавательская должность: ' + ${teacher.academicDegree.academicDegreeName}"></p>
+                                        <p class="card-text" th:text="'Преподавательская должность: ' + ${teacher.academicDegree?.academicDegreeName}"></p>
                                         <p class="card-text" th:text="'Рабочая ставка: ' + ${teacher.getWorkingRate()}"></p>
                                         <p class="card-text" th:text="'Максимальное количество часов работы: ' + ${teacher.getMaximumWorkingHours()}"></p>
                                         <p class="card-text" th:text="'Актуальное количество часов работы: ' + ${teacher.actualWorkingHours}"></p>

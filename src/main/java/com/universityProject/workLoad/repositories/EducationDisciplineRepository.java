@@ -9,6 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface EducationDisciplineRepository extends JpaRepository<EducationalDiscipline, Integer> {
-    //public List<EducationalDiscipline> findEducationalDisciplineByHasTeacherIsTrue();
     public Optional<EducationalDiscipline> findByEducationalDisciplineName(String disciplineName);
 }

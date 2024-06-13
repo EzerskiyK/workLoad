@@ -1,8 +1,8 @@
 package com.universityProject.workLoad.controllers;
 
 import com.universityProject.workLoad.model.EducationalDiscipline;
-import com.universityProject.workLoad.secvices.EducationDisciplineService;
-import com.universityProject.workLoad.secvices.TeacherService;
+import com.universityProject.workLoad.services.EducationDisciplineService;
+import com.universityProject.workLoad.services.TeacherService;
 import com.universityProject.workLoad.util.EducationDisciplineValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

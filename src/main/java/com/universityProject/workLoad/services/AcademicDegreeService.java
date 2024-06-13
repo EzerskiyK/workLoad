@@ -1,4 +1,4 @@
-package com.universityProject.workLoad.secvices;
+package com.universityProject.workLoad.services;
 
 import com.universityProject.workLoad.model.AcademicDegree;
 import com.universityProject.workLoad.model.Teacher;

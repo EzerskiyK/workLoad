@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
+
+</head>
+<body>
+<div class="d-flex justify-content-center ">
+    <div class="row row-cols-1 g-4 mt-3">
+        <div class="col">
+            <div class="container">
+                <form class="form-signin" th:method="POST" th:action="@{/auth/registration}" th:object="${person}">
+
+                    <h2 class="form-signin-heading">Зарегестрируйте аккаунт</h2>
+
+                    <p>
+                        <label for="username" class="form-label">Введите логин</label>
+                        <input type="text" th:field="*{username}" class="form-control" aria-label="Логин" id="username">
+                        <div style="color: crimson" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"> error</div>
+
+                    </p>
+
+                    <p>
+                        <label for="password" class="form-label">Введите пароль</label>
+                        <input type="text" th:field="*{password}" class="form-control" aria-label="Пароль" id="password">
+                        <div style="color: crimson" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> error</div>
+
+                    </p>
+
+                    <p>
+                        <label for="email" class="form-label">Введите Email</label>
+                        <input type="text" th:field="*{email}" class="form-control" aria-label="Email" id="email">
+                        <div style="color: crimson" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"> error</div>
+
+                    </p>
+
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегестрироваться</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
+</body>
+</html>

@@ -1,6 +1,6 @@
 package com.universityProject.workLoad.controllers;
 
-import com.universityProject.workLoad.secvices.SubGroupOfStudentsService;
+import com.universityProject.workLoad.services.SubGroupOfStudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

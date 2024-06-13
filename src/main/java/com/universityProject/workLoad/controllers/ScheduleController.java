@@ -2,10 +2,10 @@ package com.universityProject.workLoad.controllers;
 
 import com.universityProject.workLoad.model.GroupOfStudents;
 import com.universityProject.workLoad.model.Schedule;
-import com.universityProject.workLoad.secvices.EducationDisciplineService;
-import com.universityProject.workLoad.secvices.GroupOfStudentsService;
-import com.universityProject.workLoad.secvices.ScheduleService;
-import com.universityProject.workLoad.secvices.TeacherService;
+import com.universityProject.workLoad.services.EducationDisciplineService;
+import com.universityProject.workLoad.services.GroupOfStudentsService;
+import com.universityProject.workLoad.services.ScheduleService;
+import com.universityProject.workLoad.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

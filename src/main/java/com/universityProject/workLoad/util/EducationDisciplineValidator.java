@@ -1,8 +1,7 @@
 package com.universityProject.workLoad.util;
 
-import com.universityProject.workLoad.model.AcademicDegree;
 import com.universityProject.workLoad.model.EducationalDiscipline;
-import com.universityProject.workLoad.secvices.EducationDisciplineService;
+import com.universityProject.workLoad.services.EducationDisciplineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -36,8 +35,5 @@ public class EducationDisciplineValidator implements Validator {
                 errors.rejectValue("educationalDisciplineName", "", "Предмет с таким названием уже существует");
             }
         }
-
-
     }
-
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
+</head>
+<body>
+<th:block th:replace="blocks/html/navbar :: navbar"></th:block>
+
+<div class="m-4">
+    <div class="row row-cols-4 g-4 mt-3">
+        <div th:each="user, iterStat : ${users}">
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${user.username}"></h5>
+                        <hr>
+                        <p class="card-text" th:text="'Email: ' + ${user.email}"></p>
+                        <hr>
+                        <p class="card-text">
+                        Роли:
+                            <div th:each="role : ${user.getRoles()}">
+                                <span th:text="${role.getName()}"></span>
+                            </div>
+                        </p>
+                        <hr>
+
+
+                        <form th:if="${user.getEnabled()} == false" th:method="PATCH" th:action="@{/admin/activate}">
+                            <input type="hidden" name="idToActivate" th:value="${user.getId()}">
+                            <button type="submit" class="btn btn-outline-primary">Активировать</button>
+                        </form>
+
+                        <form th:if="${user.getEnabled()} == true" th:method="PATCH" th:action="@{/admin/deactivate}">
+                            <input type="hidden" name="idToDeactivate" th:value="${user.getId()}">
+                            <button type="submit" class="btn btn-outline-danger">Деактивировать</button>
+                        </form>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
+</body>
+</html>

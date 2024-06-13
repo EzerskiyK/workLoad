@@ -1,4 +1,4 @@
-package com.universityProject.workLoad.secvices;
+package com.universityProject.workLoad.services;
 
 import com.universityProject.workLoad.model.*;
 import com.universityProject.workLoad.repositories.ScheduleRepository;
@@ -118,8 +118,6 @@ public class ScheduleService {
                 subGroupOfStudentsList.add(subGroupOfStudents.get());
 
             }else {
-
-                System.out.println(numberToAddStudents);
 
                 int numberOfStudents;
 

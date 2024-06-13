@@ -1,7 +1,7 @@
 package com.universityProject.workLoad.util;
 
 import com.universityProject.workLoad.model.AcademicDegree;
-import com.universityProject.workLoad.secvices.AcademicDegreeService;
+import com.universityProject.workLoad.services.AcademicDegreeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -26,20 +26,25 @@ public class AcademicDegreeValidator implements Validator {
     public void validate(Object target, Errors errors) {
         AcademicDegree academicDegree = (AcademicDegree) target;
         if (academicDegree.getAcademicDegreeId() == null){
-            if(academicDegreeService.findAcademicDegreeByName(academicDegree.getAcademicDegreeName()).isPresent()){
-                errors.rejectValue("academicDegreeName", "", "Должность с тамким названием уже существует");
+            if(academicDegreeService.findAcademicDegreeByName(academicDegree
+                    .getAcademicDegreeName()).isPresent()){
+                errors.rejectValue("academicDegreeName",
+                        "",
+                        "Должность с тамким названием уже существует");
             }
         }else{
-            AcademicDegree academicDegreeToUpdate = academicDegreeService.findById(academicDegree.getAcademicDegreeId());
-            if(academicDegreeToUpdate != null && !academicDegreeToUpdate.getAcademicDegreeName().equals(academicDegree.getAcademicDegreeName())
-            && academicDegreeService.findAcademicDegreeByName(academicDegree.getAcademicDegreeName()).isPresent()){
-                errors.rejectValue("academicDegreeName", "", "Должность с тамким названием уже существует cerf");
+            AcademicDegree academicDegreeToUpdate = academicDegreeService.findById(academicDegree
+                    .getAcademicDegreeId());
+            if(academicDegreeToUpdate != null
+                    && !academicDegreeToUpdate.getAcademicDegreeName()
+                    .equals(academicDegree.getAcademicDegreeName())
+            && academicDegreeService.findAcademicDegreeByName(academicDegree.
+                    getAcademicDegreeName()).isPresent()){
+                errors.rejectValue("academicDegreeName",
+                        "",
+                        "Должность с тамким названием уже существует cerf");
 
             }
         }
-
-
-
-
     }
 }

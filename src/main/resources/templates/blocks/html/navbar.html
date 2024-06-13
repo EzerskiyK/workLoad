@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <title>Navbar Fragment</title>
 </head>
 <body>
 <div th:fragment="navbar">
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
     <div class="container-fluid">
       <a class="navbar-brand" th:href="@{/}">ГГУ Скарына</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,39 +13,54 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Распределение
             </a>
             <ul class="dropdown-menu">
-
               <li><a th:if="${notAllScheduleHasTeacher} == true" style="color: crimson" class="dropdown-item" href="/main/schedule">Нагрузка</a></li>
-              <li><a th:if="${notAllScheduleHasTeacher} == false"  class="dropdown-item" href="/main/schedule">Нагрузка</a></li>
-
-              <li><a th:if="${teachersHasOverwork} == true" style="color: crimson" class="dropdown-item" href="/main/schedule_teacher">Нагрузка по преподователям</a></li>
-              <li><a th:if="${teachersHasOverwork} == false"  class="dropdown-item" href="/main/schedule_teacher">Нагрузка по преподователям</a></li>
-
+              <li><a th:if="${notAllScheduleHasTeacher} == false" class="dropdown-item" href="/main/schedule">Нагрузка</a></li>
+              <li><a th:if="${teachersHasOverwork} == true" style="color: crimson" class="dropdown-item" href="/main/schedule_teacher">Нагрузка по преподавателям</a></li>
+              <li><a th:if="${teachersHasOverwork} == false" class="dropdown-item" href="/main/schedule_teacher">Нагрузка по преподавателям</a></li>
             </ul>
           </li>
-
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Настройки
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/settings/academic_degree">Преподовательские должности</a></li>
-              <li><a class="dropdown-item" href="/settings/teacher">Преподователи</a></li>
+              <li><a class="dropdown-item" href="/settings/academic_degree">Преподавательские должности</a></li>
+              <li><a class="dropdown-item" href="/settings/teacher">Преподаватели</a></li>
               <li><a class="dropdown-item" href="/settings/subject">Дисциплины</a></li>
               <li><a class="dropdown-item" href="/settings/group">Группы студентов</a></li>
               <li><a class="dropdown-item" href="/settings/sub_group">Подгруппы студентов</a></li>
             </ul>
           </li>
+          <li class="nav-item" sec:authorize="!hasRole('ROLE_ADMIN')">
+            <a class="nav-link disabled" aria-disabled="true">Настройки</a>
+          </li>
         </ul>
-      </div>
+        <div class="d-flex ms-auto me-5">
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span sec:authentication="name"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
 
+              <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" href="/admin">Меню администратора</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <form th:action="@{/auth/logout}" th:method="POST">
+                  <button type="submit" class="btn btn-outline-danger ms-3 mt-3">Выйти</button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 </div>
+
 </body>
 </html>

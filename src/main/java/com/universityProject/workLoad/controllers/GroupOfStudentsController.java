@@ -1,7 +1,7 @@
 package com.universityProject.workLoad.controllers;
 
 import com.universityProject.workLoad.model.GroupOfStudents;
-import com.universityProject.workLoad.secvices.GroupOfStudentsService;
+import com.universityProject.workLoad.services.GroupOfStudentsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
