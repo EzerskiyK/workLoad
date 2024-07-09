@@ -27,6 +27,45 @@ You need to create a file bdData.properties at the path /src/main/resources.
 You can copy the contents of bdData.properties.origin (located in the same directory) and paste the data from your database.
 
 
+## **Examples of work**
+
+**Editing faculty members**
+
+![Editing faculty members](https://github.com/EzerskiyK/git-test/blob/main/imageFileForGitHub/1.png)
+
+**More about the teacher**
+
+![more about the teacher](https://github.com/EzerskiyK/git-test/blob/main/imageFileForGitHub/2.png)
+
+**Add new**
+
+![add new](https://github.com/EzerskiyK/git-test/blob/main/imageFileForGitHub/3.png)
+
+
+**Add new validation**
+
+![add new validation](https://github.com/EzerskiyK/git-test/blob/main/imageFileForGitHub/4.png)
+
+
+**Schedule and add new schedule**
+
+![Schedule and add new schedule](https://github.com/EzerskiyK/git-test/blob/main/imageFileForGitHub/5.png)
+
+**Navbar**
+
+![navbar](https://github.com/EzerskiyK/git-test/blob/main/imageFileForGitHub/6.png)
+
+**Сheck the schedule and workload of teachers**
+
+![check the schedule and workload of teachers](https://github.com/EzerskiyK/git-test/blob/main/imageFileForGitHub/7.png)
+
+**Teacher's personal page**
+
+![Teacher's personal page](https://github.com/EzerskiyK/git-test/blob/main/imageFileForGitHub/8.png)
+
+
+
+
 
 
 
