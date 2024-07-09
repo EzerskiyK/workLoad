@@ -78,7 +78,6 @@ public class EducationalDisciplineController {
 
     @DeleteMapping()
     public String delete(@RequestParam("subjectId") int id) {
-
         educationDisciplineService.delete(id);
 
         return "redirect:/settings/subject";

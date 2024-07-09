@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -31,12 +30,16 @@ public class AdminService {
 
     @Transactional
     public void activate(int id) {
-        personRepository.findById(id).get().setEnabled(true);
+        personRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No users with this id were found"))
+                .setEnabled(true);
     }
 
     @Transactional
     public void deactivate(int id) {
-        personRepository.findById(id).get().setEnabled(false);
+        personRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No users with this id were found"))
+                .setEnabled(false);
     }
 
 

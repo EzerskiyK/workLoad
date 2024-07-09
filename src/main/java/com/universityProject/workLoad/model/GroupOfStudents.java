@@ -1,13 +1,9 @@
 package com.universityProject.workLoad.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import java.time.LocalDate;
-import java.time.Year;
 import java.util.List;
 
 @Entity
@@ -37,10 +33,6 @@ public class GroupOfStudents {
 
     @OneToMany(mappedBy = "mainGroup")
     private List<SubGroupOfStudents> subGroupOfStudents;
-
-
-
-    ///////////////////////
 
     public GroupOfStudents() {}
 

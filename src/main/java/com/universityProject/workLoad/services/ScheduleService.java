@@ -30,16 +30,17 @@ public class ScheduleService {
     public List<Schedule> findAll() {
         return scheduleRepository.findAll();
     }
+
     public Schedule findById(int id) {
-        Optional<Schedule> schedule = scheduleRepository.findById(id);
-        return schedule.orElse(null);
+        return scheduleRepository.findById(id).orElse(null);
     }
 
 
     @Transactional
     public void save(Schedule schedule, GroupOfStudents groupOfStudentsInfo) {
 
-        schedule.getActualTeacher().addActualWorkingHours(schedule.getEducationalDiscipline().getEducationalDisciplineDuration());
+        schedule.getActualTeacher()
+                .addActualWorkingHours(schedule.getEducationalDiscipline().getEducationalDisciplineDuration());
 
         Integer studentLimit = schedule.getEducationalDiscipline().getMaxStudents();
 
@@ -136,10 +137,16 @@ public class ScheduleService {
 
     @Transactional
     public void delete(int id){
-        if( scheduleRepository.findById(id).get().getActualTeacher() != null){
-            scheduleRepository.findById(id).get().getActualTeacher()
+        if(scheduleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Schedule not found"))
+                .getActualTeacher() != null){
+            scheduleRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Schedule not found"))
+                    .getActualTeacher()
                     .subtractActualWorkingHours(scheduleRepository
-                            .findById(id).get().getEducationalDiscipline()
+                            .findById(id)
+                            .orElseThrow(() -> new IllegalArgumentException("Schedule not found"))
+                            .getEducationalDiscipline()
                             .getEducationalDisciplineDuration());
         }
         scheduleRepository.deleteById(id);

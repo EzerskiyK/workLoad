@@ -6,7 +6,6 @@ import com.universityProject.workLoad.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +28,9 @@ public class PersonService {
 
     public void register(Person person) {
         person.setPassword(passwordEncoder.encode(person.getPassword()));
-        person.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
+        person.setRoles(List.of(roleRepository
+                .findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Role not found"))));
         person.setEnabled(false);
         personRepository.save(person);
     }

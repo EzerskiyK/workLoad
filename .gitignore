@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+###
+/public/images/teachersImages/*
+/src/main/resources/bdData.properties

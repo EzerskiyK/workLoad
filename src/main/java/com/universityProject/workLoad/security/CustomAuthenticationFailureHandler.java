@@ -14,11 +14,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String errorMessage = "Не верный логин или пароль";
-//        if (exception.getMessage().equals("User is disabled")) {
-//            errorMessage = "Ваш аккаунт на рассмотрении\nу администратора";
-//        }
-//        String encodedErrorMessage = URLEncoder.encode(errorMessage,
-//                StandardCharsets.UTF_8.toString());
         response.sendRedirect("/auth/login?error=" + URLEncoder.encode(exception.getMessage(),
                StandardCharsets.UTF_8.toString()));
     }

@@ -1,7 +1,6 @@
 package com.universityProject.workLoad.config;
 
 import com.universityProject.workLoad.security.CustomAuthenticationFailureHandler;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;

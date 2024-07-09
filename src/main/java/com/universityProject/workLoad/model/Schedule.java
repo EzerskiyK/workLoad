@@ -1,7 +1,6 @@
 package com.universityProject.workLoad.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "schedule")

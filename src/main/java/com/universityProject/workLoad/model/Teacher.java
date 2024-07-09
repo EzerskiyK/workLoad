@@ -129,6 +129,7 @@ public class Teacher {
     public void setActualWorkingHours(double actualWorkingHours) {
         this.actualWorkingHours = actualWorkingHours;
     }
+    public void setActualWorkingHours() {this.actualWorkingHours = findActualWorkingHours();}
 
     public List<Schedule> getActualSubject() {
         return actualSubject;
@@ -145,4 +146,18 @@ public class Teacher {
     public void subtractActualWorkingHours(double actualWorkingHours) {
         this.actualWorkingHours -= actualWorkingHours;
     }
+
+    public double findActualWorkingHours(){
+        return this.getActualSubject().stream()
+                .mapToDouble(schedule-> schedule.getEducationalDiscipline().getEducationalDisciplineDuration())
+                .sum();
+
+    }
+
+    public void deleteSubject(int subjectId) {
+        actualSubject.removeIf(schedule -> schedule.
+                getEducationalDiscipline().
+                getEducationalDisciplineId() == subjectId);
+    }
+
 }

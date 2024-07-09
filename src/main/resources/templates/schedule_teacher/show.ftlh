@@ -48,7 +48,7 @@
                         <div class="card card-body">
                             <ul class="list-group">
                                 <#list teacher.actualSubject as actualsubject>
-                                    <li class="list-group-item"> <a href="/schedule/${actualsubject.scheduleId}">${actualsubject.educationalDiscipline.educationalDisciplineName}</a>   | ${actualsubject.subGroupOfStudents.mainGroup.speciality}  | ${actualsubject.subGroupOfStudents.numberOfStudents} чел. <br>${actualsubject.educationalDiscipline.educationalDisciplineDuration} ч.</li>
+                                    <li class="list-group-item"> ${actualsubject.educationalDiscipline.educationalDisciplineName}  | ${actualsubject.subGroupOfStudents.mainGroup.speciality}  | ${actualsubject.subGroupOfStudents.numberOfStudents} чел. <br>${actualsubject.educationalDiscipline.educationalDisciplineDuration} ч.</li>
                                 </#list>
                             </ul>
 
@@ -105,6 +105,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <form action="/main/schedule_teacher/${teacher.teacherId}" method="post">
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                             <div class="modal-body">
                                                 <div class="mb-3">
                                                     <label for="groupOfStudents${subject_index}" class="form-label">Для добавления предмета в нагрузку преподователя выберите группу студентов для него</label>
@@ -117,8 +118,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="закрыть" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="создать" class="btn btn-primary">Confirm</button>
+                                                <button type="submit" class="btn btn-primary">Создать</button>
                                             </div>
                                         </form>
                                     </div>
@@ -132,11 +132,4 @@
 
         </div>
     </div>
-
-
-</div>
-
-
-
-
 </@c.page>

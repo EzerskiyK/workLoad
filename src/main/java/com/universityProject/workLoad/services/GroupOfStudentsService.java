@@ -1,16 +1,12 @@
 package com.universityProject.workLoad.services;
 
 import com.universityProject.workLoad.model.GroupOfStudents;
-import com.universityProject.workLoad.model.SubGroupOfStudents;
 import com.universityProject.workLoad.repositories.GroupOfStudentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,8 +23,7 @@ public class GroupOfStudentsService {
     }
 
     public GroupOfStudents findById(int id) {
-        Optional<GroupOfStudents> groupOfStudents = groupOfStudentsRepository.findById(id);
-        return groupOfStudents.orElse(null);
+        return groupOfStudentsRepository.findById(id).orElse(null);
     }
 
     @Transactional
@@ -39,10 +34,7 @@ public class GroupOfStudentsService {
     @Transactional
     public void update(int id, GroupOfStudents updatedGroupOfStudents) {
 
-        GroupOfStudents toUpdateGroupOfStudents = groupOfStudentsRepository.findById(id).get();
-
-        updatedGroupOfStudents.setGroupId(toUpdateGroupOfStudents.getGroupId());
-        updatedGroupOfStudents.setSubGropOfStudents(toUpdateGroupOfStudents.getSubGropOfStudents());
+        enrichUpdatedGroupOfStudents(updatedGroupOfStudents, id);
 
         groupOfStudentsRepository.save(updatedGroupOfStudents);
     }
@@ -52,14 +44,11 @@ public class GroupOfStudentsService {
         groupOfStudentsRepository.deleteById(id);
     }
 
-    public List<SubGroupOfStudents> findSubGroupsByGroupId(int groupId) {
-
-        Optional<GroupOfStudents> groupOfStudents = groupOfStudentsRepository.findById(groupId);
-
-        if(groupOfStudents.isPresent()) {
-            return groupOfStudents.get().getSubGropOfStudents();
-        }
-
-        return Collections.emptyList();
+    private void enrichUpdatedGroupOfStudents(GroupOfStudents updatedGroupOfStudents, int id) {
+        GroupOfStudents toUpdateGroupOfStudents = groupOfStudentsRepository
+                .findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("Group of students not found"));
+        updatedGroupOfStudents.setGroupId(toUpdateGroupOfStudents.getGroupId());
+        updatedGroupOfStudents.setSubGropOfStudents(toUpdateGroupOfStudents.getSubGropOfStudents());
     }
 }

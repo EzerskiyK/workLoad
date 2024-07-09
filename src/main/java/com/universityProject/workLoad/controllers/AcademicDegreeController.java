@@ -49,7 +49,6 @@ public class AcademicDegreeController {
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-
         model.addAttribute("academicDegree", academicDegreeService.findById(id));
 
         return "academic_degree/edit";

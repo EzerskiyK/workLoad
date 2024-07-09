@@ -39,10 +39,6 @@ public class EducationalDiscipline {
     @OneToMany(mappedBy = "educationalDiscipline")
     private List<Schedule> schedules;
 
-
-    /////////////
-
-
     public EducationalDiscipline() {}
 
     public EducationalDiscipline(String educationalDisciplineName, Integer educationalDisciplineDuration, Teacher recomendedTeacher, Integer maxStudents) {

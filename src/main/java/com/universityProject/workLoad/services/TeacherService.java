@@ -1,6 +1,5 @@
 package com.universityProject.workLoad.services;
 
-import com.universityProject.workLoad.model.EducationalDiscipline;
 import com.universityProject.workLoad.model.Teacher;
 import com.universityProject.workLoad.repositories.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +8,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,9 +30,9 @@ public class TeacherService {
     public List<Teacher> findAll() {
         return teacherRepository.findAll(Sort.by("fio"));
     }
+
     public Teacher findById(int id) {
-        Optional<Teacher> teacher = teacherRepository.findById(id);
-        return teacher.orElse(null);
+        return teacherRepository.findById(id).orElse(null);
     }
 
     @Transactional
@@ -51,24 +47,17 @@ public class TeacherService {
 
     @Transactional
     public void update(int id, Teacher updatedTeacher, MultipartFile file) throws IOException {
-
-        Teacher teacherToUpdate = teacherRepository.findById(id).get();
-        updatedTeacher.setTeacherId(teacherToUpdate.getTeacherId());
-        double maximumWorkingHours = updatedTeacher.getWorkingRate() * updatedTeacher.getAcademicDegree().getWorkLimit();
-        updatedTeacher.setMaximumWorkingHours(maximumWorkingHours);
-
-        if(file.isEmpty()){
-            updatedTeacher.setImageFileName(teacherToUpdate.getImageFileName());
-        } else {
-            updatedTeacher.setImageFileName(saveImage(file));
-        }
+        enrichUpdatedTeacher(updatedTeacher, id, file);
 
         teacherRepository.save(updatedTeacher);
     }
 
     @Transactional
     public void delete(int id) {
-        File file = new File(teacherImageUploadPath + "/" + teacherRepository.findById(id).get().getImageFileName());
+        File file = new File(teacherImageUploadPath + "/" + teacherRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Could not find teacher with id: " + id))
+                .getImageFileName());
         if(file.delete()){
             System.out.println("deleted");
         } else {
@@ -77,19 +66,11 @@ public class TeacherService {
         teacherRepository.deleteById(id);
     }
 
-    public List<EducationalDiscipline> findRecSubjectByTeacherId(int id){
-        Optional<Teacher> teacher = teacherRepository.findById(id);
-        if(teacher.isPresent()){
-            return teacher.get().getRecommendedSubject();
-        }else
-            return Collections.emptyList();
-    }
-
     public String saveImage(MultipartFile file) throws IOException {
         if (!file.isEmpty()) {
             File uploadDir = new File(teacherImageUploadPath);
             if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
+                System.out.println(uploadDir.mkdirs());
             }
             String uuidFile = UUID.randomUUID().toString();
             String resultFileName = uuidFile + "." + file.getOriginalFilename();
@@ -109,4 +90,22 @@ public class TeacherService {
     public Boolean teachersHasOverwork() {
         return teacherRepository.findAll().stream().anyMatch(teacher -> teacher.getActualWorkingHours()>teacher.getMaximumWorkingHours());
     }
+
+    private void enrichUpdatedTeacher(Teacher updatedTeacher, int id, MultipartFile file) throws IOException {
+        Teacher teacherToUpdate = teacherRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Teacher not found"));
+        updatedTeacher.setTeacherId(teacherToUpdate.getTeacherId());
+        double maximumWorkingHours = updatedTeacher.getWorkingRate()
+                * updatedTeacher.getAcademicDegree().getWorkLimit();
+        updatedTeacher.setMaximumWorkingHours(maximumWorkingHours);
+        updatedTeacher.setActualSubject(teacherToUpdate.getActualSubject());
+        updatedTeacher.setActualWorkingHours(teacherToUpdate.getActualWorkingHours());
+
+        if(file.isEmpty()){
+            updatedTeacher.setImageFileName(teacherToUpdate.getImageFileName());
+        } else {
+            updatedTeacher.setImageFileName(saveImage(file));
+        }
+    }
+
 }
