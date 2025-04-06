@@ -1,0 +1,13 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <include file="create-acadeemic-degree-changeset.xml" relativeToChangelogFile="true"/>
+    <include file="create-teacher-changeset.xml" relativeToChangelogFile="true"/>
+    <include file="create-education-discipline.xml" relativeToChangelogFile="true"/>
+    <include file="create-group-of-students.xml" relativeToChangelogFile="true"/>
+    <include file="create-sub-group-of-students.xml" relativeToChangelogFile="true"/>
+    <include file="create-schedule.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

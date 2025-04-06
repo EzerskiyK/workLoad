@@ -1,0 +1,4 @@
+id,username,password,email,enabled
+1,admin,$2a$10$lEBJcaELt8fKIcZadZMv3O.DeYJ2BzzJdgIO2.XuQlXCfBsYZLKbK,admin@gmail.com,true
+2,user,$2a$10$hg4cVI.PSd7twpabCurX0e4H4hn1zRjqCe5xF82YMTSC1p4410qzu,user@user.com,true
+

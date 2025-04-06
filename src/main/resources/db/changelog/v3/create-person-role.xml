@@ -1,0 +1,22 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="v3-3" author="Kirill Yezerskiy">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="person_role"/>
+            </not>
+        </preConditions>
+        <sql>
+            create table person_role
+            (
+                person_id integer not null references person,
+                role_id   integer not null references role,
+                primary key (person_id, role_id)
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

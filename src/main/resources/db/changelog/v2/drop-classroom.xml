@@ -1,0 +1,13 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="v2-1" author="Kirill Yezerskiy">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="classroom"/>
+        </preConditions>
+        <dropTable tableName="classroom"/>
+    </changeSet>
+</databaseChangeLog>
