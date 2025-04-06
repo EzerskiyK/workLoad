@@ -50,6 +50,9 @@ public class Teacher {
     @OneToMany(mappedBy = "actualTeacher")
     private List<Schedule> actualSubject;
 
+    @OneToMany(mappedBy = "scientificSupervisor")
+    private List<Student> students;
+
     @PrePersist
     private void init(){
         System.out.println(getFio());

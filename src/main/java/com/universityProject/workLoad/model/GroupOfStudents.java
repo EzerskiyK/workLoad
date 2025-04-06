@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+
 import java.util.List;
 
 @Entity
@@ -33,6 +35,9 @@ public class GroupOfStudents {
 
     @OneToMany(mappedBy = "mainGroup")
     private List<SubGroupOfStudents> subGroupOfStudents;
+
+    @OneToMany(mappedBy = "groupOfStudents")
+    private List<Student> students;
 
     public GroupOfStudents() {}
 
