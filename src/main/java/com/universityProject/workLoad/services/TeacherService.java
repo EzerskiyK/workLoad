@@ -20,6 +20,9 @@ public class TeacherService {
     @Value("${teacher.image.upload.path}")
     private String teacherImageUploadPath;
 
+    @Value("${scientific.supervisor.hours}")
+    private String scientificSupervisorHours;
+
     private final TeacherRepository teacherRepository;
 
     @Autowired
@@ -89,6 +92,15 @@ public class TeacherService {
 
     public Boolean teachersHasOverwork() {
         return teacherRepository.findAll().stream().anyMatch(teacher -> teacher.getActualWorkingHours()>teacher.getMaximumWorkingHours());
+    }
+
+    public void editWorkingHoursByStudent(Teacher newTeacher, Teacher oldTeacher) {
+        newTeacher.addActualWorkingHours(Double.parseDouble(scientificSupervisorHours));
+        teacherRepository.save(newTeacher);
+        if(oldTeacher != null) {
+            oldTeacher.setActualWorkingHours(oldTeacher.getActualWorkingHours() - Double.parseDouble(scientificSupervisorHours));
+            teacherRepository.save(oldTeacher);
+        }
     }
 
     private void enrichUpdatedTeacher(Teacher updatedTeacher, int id, MultipartFile file) throws IOException {

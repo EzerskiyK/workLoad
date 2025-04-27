@@ -29,21 +29,12 @@ public class Student {
     @Column(name = "date_of_admission")
     private LocalDate dateOfAdmission;
 
-    @NotNull(message = "Это поле не должно быть пустым")
-    @Column(name = "grade")
-    private Integer grade;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "group_of_students", referencedColumnName = "group_id")
     private GroupOfStudents groupOfStudents;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "sub_group", referencedColumnName = "sub_group_id")
-    private SubGroupOfStudents subGroup;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "scientific_supervisor", referencedColumnName = "teacher_id")
     private Teacher scientificSupervisor;

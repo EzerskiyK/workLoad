@@ -38,6 +38,7 @@
                         <li><a class="dropdown-item" href="/settings/teacher">Преподователи</a></li>
                         <li><a class="dropdown-item" href="/settings/subject">Дисциплины</a></li>
                         <li><a class="dropdown-item" href="/settings/group">Группы студентов</a></li>
+                        <li><a class="dropdown-item" href="/settings/student">Студенты</a></li>
                         <li><a class="dropdown-item" href="/settings/sub_group">Подгруппы студентов</a></li>
                     </ul>
                 </li>

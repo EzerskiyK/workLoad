@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <th:block th:replace="blocks/html/head :: head"></th:block>
+
+</head>
+<body>
+<th:block th:replace="blocks/html/navbar :: navbar"></th:block>
+
+<div class="container text-center md-5">
+    <h4 class="mt-5">Студенты</h4>
+</div>
+
+<br>
+<br>
+
+<div class="m-4">
+    <div class="row row-cols-4 g-4 mt-3">
+        <div th:each="student, iterStat : ${students}">
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${student.fio}"></h5>
+                        <p class="card-text" th:text="'Год поступления: ' + ${student.dateOfAdmission}"></p>
+                        <p class="card-text" th:text="'Группа: ' + ${student.groupOfStudents?.speciality}"></p>
+
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#exampleModal' + ${iterStat.index}">
+                            Подробнее
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" th:id="'exampleModal' + ${iterStat.index}" tabindex="-1" th:aria-labelledby="'exampleModalLabel' + ${iterStat.index}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" th:id="'exampleModalLabel' + ${iterStat.index}" th:text="${student.fio}"></h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="card-text" th:text="'ФИО: ' + ${student.fio}"></p>
+                                        <p class="card-text" th:text="'Год поступления: ' + ${student.dateOfAdmission}"></p>
+                                        <p class="card-text" th:text="'Группа: ' + ${student.groupOfStudents?.speciality}"></p>
+                                        <p class="card-text" th:text="'Научный руководитель: ' + ${student.scientificSupervisor?.fio}"></p>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <form th:method="DELETE" th:action="@{/settings/student}">
+                                            <input type="hidden" name="studentId" th:value="${student.id}">
+                                            <button type="submit" class="btn btn-danger" >Удалить</button>
+                                        </form>
+
+                                        <form th:method="GET" th:action="@{/settings/student/{id}/edit(id=${student.id})}">
+                                            <button type="submit" class="btn btn-primary">Редактировать</button>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<br/>
+<hr/>
+
+<p class="ms-3">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+        Добавить нового студента
+    </button>
+</p>
+<div style="min-height: 500px;">
+    <div class="collapse collapse-horizontal ms-3" id="collapseWidthExample">
+        <div class="card card-body" style="width: 600px;">
+            <form th:method="POST" th:action="@{/settings/student/create}" th:object = "${student}">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label for="name">Введите ФИО</label>
+                        <input type="text" class="form-control" th:field="*{fio}" id="name"/>
+                        <div style="color: crimson" th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}">Full name error</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="dateOfAdmission">Введите год поступления</label>
+                        <input type="date" class="form-control" th:field="*{dateOfAdmission}" id="dateOfAdmission"/>
+                        <div style="color: crimson" th:if="${#fields.hasErrors('dateOfAdmission')}" th:errors="*{dateOfAdmission}">Full name error</div>
+                    </div>
+                    <div class="col-12">
+                        <label for="groupOfStudents">Выберите группу </label>
+                        <select th:object="${student}" th:field="*{groupOfStudents}" id="groupOfStudents" class="form-select">
+                            <option th:each="group : ${groupOfStudents}" th:value="${group.getGroupId()}" th:text="${group.getSpeciality()}">
+                            </option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Создать</button>
+
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="blocks/html/scripts :: scripts"></th:block>
+</body>
+</html>
+

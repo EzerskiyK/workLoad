@@ -27,10 +27,6 @@ public class SubGroupOfStudents {
     @OneToMany(mappedBy = "subGroupOfStudents")
     private List<Schedule> scheduleList;
 
-    @OneToMany(mappedBy = "subGroup")
-    private List<Student> students;
-
-
 
     public SubGroupOfStudents() {
     }
