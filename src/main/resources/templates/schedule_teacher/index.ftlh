@@ -3,7 +3,7 @@
 <@c.page>
 
     <div class="container text-center md-5">
-        <h2>Переподовательский состав</h2>
+        <h2>Переподавательский состав</h2>
     </div>
 
     <form action="/main/schedule_teacher" method="get" class="row row-cols-lg-auto g-3  align-items-center">

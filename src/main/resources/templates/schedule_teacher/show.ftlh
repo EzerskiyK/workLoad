@@ -2,7 +2,7 @@
 
 <@c.page>
     <div class="container text-center md-5">
-        <h2> Нагрузка для преподователя </b> <br></h2>
+        <h2> Нагрузка для преподавателя </b> <br></h2>
     </div>
     <hr>
     <br>
@@ -39,7 +39,7 @@
 
             <p class="d-inline-flex gap-1">
                 <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Посмотреть список текущих предметов</a>
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Посмотреть список рекомендованных предметов</button>
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Научный руководитель у</button>
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Посмотреть оба списка</button>
             </p>
             <div class="row">
@@ -47,7 +47,7 @@
                     <div class="collapse multi-collapse" id="multiCollapseExample1">
                         <div class="card card-body">
                             <ul class="list-group">
-                                <#list teacher.actualSubject as actualsubject>
+                                <#list teacher.actualSubject![] as actualsubject>
                                     <li class="list-group-item"> ${actualsubject.educationalDiscipline.educationalDisciplineName}  | ${actualsubject.subGroupOfStudents.mainGroup.speciality}  | ${actualsubject.subGroupOfStudents.numberOfStudents} чел. <br>${actualsubject.educationalDiscipline.educationalDisciplineDuration} ч.</li>
                                 </#list>
                             </ul>
@@ -59,9 +59,9 @@
                     <div class="collapse multi-collapse" id="multiCollapseExample2">
                         <div class="card card-body">
                             <ul class="list-group">
-                                <#list teacher.recommendedSubject as recomendedsubject>
-                                    <li class="list-group-item">${recomendedsubject.educationalDisciplineName}</li>
-                                </#list>
+                                    <#list students as student>
+                                        <li class="list-group-item">${student.fio}</li>
+                                    </#list>
                             </ul>
                         </div>
                     </div>

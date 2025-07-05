@@ -1,6 +1,5 @@
 package com.universityProject.workLoad.util;
 
-import com.universityProject.workLoad.model.EducationalDiscipline;
 import com.universityProject.workLoad.model.Student;
 import com.universityProject.workLoad.services.StudentService;
 import lombok.RequiredArgsConstructor;

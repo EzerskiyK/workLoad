@@ -4,10 +4,7 @@ import com.universityProject.workLoad.model.EducationalDiscipline;
 import com.universityProject.workLoad.model.GroupOfStudents;
 import com.universityProject.workLoad.model.Schedule;
 import com.universityProject.workLoad.model.Teacher;
-import com.universityProject.workLoad.services.EducationDisciplineService;
-import com.universityProject.workLoad.services.GroupOfStudentsService;
-import com.universityProject.workLoad.services.ScheduleService;
-import com.universityProject.workLoad.services.TeacherService;
+import com.universityProject.workLoad.services.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +16,15 @@ public class ScheduleTeacherController {
     private final GroupOfStudentsService groupOfStudentsService;
     private final EducationDisciplineService educationDisciplineService;
     private final ScheduleService scheduleService;
+    private final StudentService studentService;
 
 
-    public ScheduleTeacherController(TeacherService teacherService, GroupOfStudentsService groupOfStudentsService, EducationDisciplineService educationDisciplineService, ScheduleService scheduleService) {
+    public ScheduleTeacherController(TeacherService teacherService, GroupOfStudentsService groupOfStudentsService, EducationDisciplineService educationDisciplineService, ScheduleService scheduleService, StudentService studentService) {
         this.teacherService = teacherService;
         this.groupOfStudentsService = groupOfStudentsService;
         this.educationDisciplineService = educationDisciplineService;
         this.scheduleService = scheduleService;
+        this.studentService = studentService;
     }
 
     @GetMapping()
@@ -42,6 +41,7 @@ public class ScheduleTeacherController {
         model.addAttribute("teacher", teacherService.findById(id));
         model.addAttribute("groupOfStudents", groupOfStudentsService.findAll());
         model.addAttribute("educationDisciplines", educationDisciplineService.findAll());
+        model.addAttribute("students", studentService.getStudentsByTeacherId(id));
 
         return "schedule_teacher/show";
 

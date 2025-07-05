@@ -1,6 +1,7 @@
 package com.universityProject.workLoad.services;
 
 import com.universityProject.workLoad.model.Student;
+import com.universityProject.workLoad.model.Teacher;
 import com.universityProject.workLoad.repositories.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,9 @@ public class StudentService {
 
         updatedStudent.setId(id);
         studentRepository.save(updatedStudent);
+    }
+
+    public List<Student> getStudentsByTeacherId(int id){
+        return studentRepository.findByScientificSupervisor_TeacherId(id);
     }
 }
