@@ -20,7 +20,7 @@ services:
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_DB: mydb
+      POSTGRES_DB: work_load
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
     ports:
