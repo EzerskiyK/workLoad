@@ -1,0 +1,96 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'APP_VERSION', defaultValue: '1.0.0', description: 'Версия приложения (используется как тег Docker-образа)')
+    }
+
+    environment {
+        DOCKER_HUB_REPO = 'ezerskiy/workload'
+        REMOTE_SSH_USER = 'jenkins'
+        REMOTE_SSH_HOST = 'jenkins-agent'
+        REMOTE_PATH = '/var/jenkins_home/cd/app'
+
+        DOCKER_CREDENTIALS_ID = 'DockerHub-cred'
+        DEPLOY_SSH_KEY = 'ssh-cd'
+
+         DB_URL = credentials('db-url')
+         DB_USERNAME = credentials('db-user')
+         DB_PASSWORD = credentials('db-pass')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                cleanWs()
+                checkout scm
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Build Docker image with tags') {
+             steps {
+                sh """
+                    docker build -t $DOCKER_HUB_REPO:latest -t $DOCKER_HUB_REPO:${params.APP_VERSION} .
+                """
+             }
+        }
+
+        stage('Docker Build and Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: "${DOCKER_CREDENTIALS_ID}",
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push $DOCKER_HUB_REPO:latest
+                        docker push $DOCKER_HUB_REPO:${params.APP_VERSION}
+                        docker logout
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to server') {
+            steps {
+                sshagent(credentials: [DEPLOY_SSH_KEY]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no $REMOTE_SSH_USER@$REMOTE_SSH_HOST "mkdir -p $REMOTE_PATH"
+                        scp docker-compose.prod.yml $REMOTE_SSH_USER@$REMOTE_SSH_HOST:$REMOTE_PATH/docker-compose.prod.yml
+                        ssh $REMOTE_SSH_USER@$REMOTE_SSH_HOST "
+                            export APP_VERSION="${APP_VERSION}" &&
+                            export DB_URL="${DB_URL}" &&
+                            export DB_USERNAME="${DB_USERNAME}" &&
+                            export DB_PASSWORD="${DB_PASSWORD}" &&
+                            cd $REMOTE_PATH &&
+                            docker compose -f docker-compose.prod.yml down &&
+                            docker compose -f docker-compose.prod.yml pull &&
+                            docker compose -f docker-compose.prod.yml up -d
+                        "
+                    """
+                }
+            }
+        }
+    }
+    post {
+            success {
+                echo "Деплой версии ${params.APP_VERSION} завершён успешно!"
+            }
+            failure {
+                echo "Ошибка деплоя"
+            }
+    }
+}
