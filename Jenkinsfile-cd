@@ -54,13 +54,15 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    def appVersion = params.APP_VERSION
-                    sh """
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push $DOCKER_HUB_REPO:latest
-                        docker push $DOCKER_HUB_REPO:${appVersion}
-                        docker logout
-                    """
+                    script{
+                        def appVersion = params.APP_VERSION
+                        sh """
+                            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                            docker push $DOCKER_HUB_REPO:latest
+                            docker push $DOCKER_HUB_REPO:${appVersion}
+                            docker logout
+                        """
+                    }
                 }
             }
         }
