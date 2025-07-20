@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_HUB_REPO = 'ezerskiy/workload'
+        DOCKER_HUB_REPO = 'ezerskiyk/work_load'
         REMOTE_SSH_USER = 'jenkins'
         REMOTE_SSH_HOST = 'jenkins-agent'
         REMOTE_PATH = '/var/jenkins_home/cd/app'
