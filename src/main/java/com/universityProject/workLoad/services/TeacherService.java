@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -101,6 +102,10 @@ public class TeacherService {
             oldTeacher.setActualWorkingHours(oldTeacher.getActualWorkingHours() - Double.parseDouble(scientificSupervisorHours));
             teacherRepository.save(oldTeacher);
         }
+    }
+
+    public Long getCount() {
+        return teacherRepository.count();
     }
 
     private void enrichUpdatedTeacher(Teacher updatedTeacher, int id, MultipartFile file) throws IOException {
