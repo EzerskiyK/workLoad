@@ -33,7 +33,7 @@ public class SecurityConfig {
                 cors(cors -> cors.disable()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
                 authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/settings/**", "/admin", "/admin/**", "api/teacher_count").hasRole("ADMIN")
+                        .requestMatchers("/settings/**", "/admin", "/admin/**", "/teacher_count").hasRole("ADMIN")
                         .requestMatchers("/auth/**", "/error").permitAll()
                         .anyRequest().hasAnyRole("ADMIN", "USER", "OBSERVER"))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
